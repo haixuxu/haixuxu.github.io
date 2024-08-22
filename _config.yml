@@ -104,5 +104,6 @@ deploy:
   type: git
   repo: https://github.com/haixuxu/haixuxu.github.io.git
   branch: gh-pages
-
-
+  message: "deploy blog"
+  name: xuxihai
+  email: xuxihai123@gmail.com
