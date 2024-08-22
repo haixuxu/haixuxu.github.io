@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hexo</title>
+  <link rel="stylesheet" href="/css/style.css">
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+  <header>
+    <h1><a href="https://haixuxu.github.io">Hexo</a></h1>
+    <nav>
+      
+        <a href="/">Home</a>
+      
+        <a href="/archives">Archives</a>
+      
+    </nav>
+  </header>
+  <main>
+    <article>
+    <h2>怎样增大 Linux 系统的 open file(s) 上限</h2>
+    <p>2017-05-20</p>
+    <div class="post-content">
+      <p>最近在工作中遇到一个问题，尝试直接将服务运行在高配（40core, 192GB；相比虚拟机来说）<br>的物理机上，但是发现服务打开的文件句柄达到 80 万左右就不能再开更多了。</p>
+<p>80 万已经是一个不小的值了，通常情况下，Linux 默认的值都很小，例如：Debian<br>8(jessie) 给普通用户设置的 open file(s) 限制为 65536，<br>可以通过下面的命令查看当前限制。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ulimit</span> -n</span><br><span class="line">$ <span class="built_in">ulimit</span> -Sn</span><br><span class="line">$ <span class="built_in">ulimit</span> -Hn</span><br></pre></td></tr></table></figure>
+
+<p><code>ulimit</code> 是一个 shell（这里使用的是 bash） 内置命令，可以通过 <code>type ulimit</code><br>验证。</p>
+<p><code>-n</code> 即表示查看或者设置 open file(s) 的限制，在 ulimit<br>中，每个限制都有两种类型：</p>
+<ul>
+<li><code>-S</code>, soft limit, 软限制，用户可以上调软限制到硬限制</li>
+<li><code>-H</code>, hard limit, 硬限制，非 root 用户不能修改</li>
+</ul>
+<p>如果没有指明，则同时修改软限制和硬限制。</p>
+<h2 id="修改-ulimit"><a href="#修改-ulimit" class="headerlink" title="修改 ulimit"></a>修改 ulimit</h2><p>修改分为临时修改和永久修改，临时修改只对当前 session<br>有效，登出和重启后都恢复系统设置。</p>
+<p>临时修改使用 <code>ulimit</code> 命令，以修改 open file(s) 为例。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ulimit -n 1024000</span></span><br><span class="line"><span class="comment"># ulimit -n</span></span><br><span class="line">1024000</span><br></pre></td></tr></table></figure>
+
+<p>永久修改需要修改 <code>/etc/security/limits.conf</code> 或者在 <code>/etc/security/limits.d/</code><br>目录下添加一个文件。具体格式参考 <code>/etc/security/limits.conf</code>，里面有详细说明。</p>
+<h2 id="open-file-s-上限"><a href="#open-file-s-上限" class="headerlink" title="open file(s) 上限"></a>open file(s) 上限</h2><p>回到遇到的问题中来：服务打开 80 万个左右的文件句柄就不能再打开了。所以，<br>尝试将 ulimit 设置为 1000 万，结果提示出错：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ulimit -n 10000000</span></span><br><span class="line">-bash: <span class="built_in">ulimit</span>: open files: cannot modify <span class="built_in">limit</span>: Operation not permitted</span><br></pre></td></tr></table></figure>
+
+<p>注意，使用的可以 root 用户，居然没有权限，然后尝试降低到：</p>
+<ul>
+<li>500 万，依然错误</li>
+<li>300 万，依然错误</li>
+<li>200 万，依然错误</li>
+<li>100 万，成功了</li>
+</ul>
+<p>显然，这里有一个上限，大概在 100-200 万之间。</p>
+<p>所以，解决问题的办法，在于怎样提高这个上限！</p>
+<p>通过一番搜索，发现 open file(s) kernel 级别有 2 个配置，分别是：</p>
+<ul>
+<li>fs.nr_open，进程级别</li>
+<li>fs.file-max，系统级别</li>
+</ul>
+<p><code>fs.nr_open</code> 默认设置的上限是 1048576，所以用户的 open file(s)<br>不可能超过这个上限。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sysctl -w fs.nr_open=10000000</span></span><br><span class="line"><span class="comment"># ulimit -n 10000000</span></span><br><span class="line"><span class="comment"># ulimit -n</span></span><br><span class="line">10000000</span><br></pre></td></tr></table></figure>
+
+<p>修改后即可设置更大的 open file(s) 了。</p>
+<p>同样，对于 kernel 参数的修改，<code>sysctl</code> 命令修改的是当前运行时，如果需要永久修改，<br>则将配置添加到 <code>/etc/sysctl.conf</code> 中，例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># echo &quot;fs.nr_open = 10000000&quot; &gt;&gt; /etc/sysctl.conf</span></span><br><span class="line"><span class="comment"># echo &quot;fs.file-max = 11000000&quot; &gt;&gt; /etc/sysctl.conf</span></span><br></pre></td></tr></table></figure>
+
+<p>注意：<code>fs.nr_open</code> 总是应该小于等于 <code>fs.file-max</code>。</p>
+<p>如果要查看当前打开的文件数，使用下面的命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sysctl fs.file-nr</span></span><br><span class="line">fs.file-nr = 1760       0       11000000</span><br></pre></td></tr></table></figure>
+
+<p>不过，增大这些值意味着能够打开更多的文件（在 Linux 中，everything is file，包括<br>socket），但是同时也意味着消耗更多的资源，所以基本上在物理机上才会遇到这种问题。</p>
+<p><a target="_blank" rel="noopener" href="https://easyengine.io/tutorials/linux/increase-open-files-limit/">https://easyengine.io/tutorials/linux/increase-open-files-limit/</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">If you are getting error “Too many open files (24)” then your application/command/script is hitting max open file limit allowed by linux. You need to increase open file limit as below:</span><br><span class="line"></span><br><span class="line">Increase limit</span><br><span class="line">Per-User Limit</span><br><span class="line">Open file: /etc/security/limits.conf</span><br><span class="line"></span><br><span class="line">Paste following towards end:</span><br><span class="line"></span><br><span class="line">*         hard    nofile      500000</span><br><span class="line">*         soft    nofile      500000</span><br><span class="line">root      hard    nofile      500000</span><br><span class="line">root      soft    nofile      500000</span><br><span class="line">500000 is fair number. I am not sure what is max limit but 999999 (Six-9) worked for me once as far as I remember.</span><br><span class="line"></span><br><span class="line">Once you save file, you may need to logout and login again.</span><br><span class="line"></span><br><span class="line">pam-limits</span><br><span class="line">I read at many places that an extra step is neede for limit to change for daemon processes. I did not need following yet, but if above changes are not working for you, you may give this a try.</span><br><span class="line"></span><br><span class="line">Open /etc/pam.d/common-session</span><br><span class="line"></span><br><span class="line">Add following line:</span><br><span class="line"></span><br><span class="line">session required pam_limits.so</span><br><span class="line">System-Wide Limit</span><br><span class="line">Set this higher than user-limit set above.</span><br><span class="line"></span><br><span class="line">Open /etc/sysctl.conf </span><br><span class="line"></span><br><span class="line">Add following:</span><br><span class="line"></span><br><span class="line">fs.file-max = 2097152</span><br><span class="line">Run:</span><br><span class="line"></span><br><span class="line">sysctl -p</span><br><span class="line">Above will increase “total” number of files that can remain open system-wide.</span><br><span class="line"></span><br><span class="line">Verify New Limits</span><br><span class="line">Use following command to see max limit of file descriptors:</span><br><span class="line"></span><br><span class="line">cat /proc/sys/fs/file-max</span><br><span class="line">Hard Limit</span><br><span class="line"></span><br><span class="line">ulimit -Hn</span><br><span class="line">Soft Limit</span><br><span class="line"></span><br><span class="line">ulimit -Sn</span><br><span class="line">if you are logged in as root:</span><br><span class="line"></span><br><span class="line">Check limit for other user</span><br><span class="line">Just replace www-data by linux username you wish to check limits for:</span><br><span class="line"></span><br><span class="line">su - www-data -c &#x27;ulimit -aHS&#x27; -s &#x27;/bin/bash&#x27;</span><br><span class="line">Check limits of a running process:</span><br><span class="line">Find process-id (PID):</span><br><span class="line"></span><br><span class="line">ps aux | grep process-name</span><br><span class="line">Suppose, XXX is PID, then run following commands to check limits:</span><br><span class="line"></span><br><span class="line">cat /proc/XXX/limits</span><br></pre></td></tr></table></figure>
+
+    </div>
+  </article>
+  
+  
+  </main>
+  <footer>
+    <p>&copy; 2024 John Doe</p>
+  </footer>
+</body>
+</html>
+

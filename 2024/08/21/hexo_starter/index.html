@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hexo</title>
+  <link rel="stylesheet" href="/css/style.css">
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+  <header>
+    <h1><a href="https://haixuxu.github.io">Hexo</a></h1>
+    <nav>
+      
+        <a href="/">Home</a>
+      
+        <a href="/archives">Archives</a>
+      
+    </nav>
+  </header>
+  <main>
+    <article>
+    <h2>Hexo搭建静态博客</h2>
+    <p>2024-08-21</p>
+    <div class="post-content">
+      <p>Hexo 是一个快速、简单且功能强大的静态博客框架。它使用 Markdown（或其他渲染引擎）解析文章，生成静态文件，并且支持丰富的插件和主题。以下是使用 Hexo 搭建静态博客的详细步骤：</p>
+<h3 id="一、安装-Hexo"><a href="#一、安装-Hexo" class="headerlink" title="一、安装 Hexo"></a>一、安装 Hexo</h3><ol>
+<li><p><strong>安装 Node.js 和 npm</strong>：<br>确保你已经安装了 Node.js（Hexo 基于 Node.js）和 npm（Node.js 的包管理器）。</p>
+<p>你可以通过以下命令检查是否已经安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure>
+
+<p>如果未安装，可以从 <a target="_blank" rel="noopener" href="https://nodejs.org/">Node.js 官网</a> 下载并安装。</p>
+</li>
+<li><p><strong>安装 Hexo</strong>：<br>使用 npm 全局安装 Hexo：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="二、创建新的-Hexo-项目"><a href="#二、创建新的-Hexo-项目" class="headerlink" title="二、创建新的 Hexo 项目"></a>二、创建新的 Hexo 项目</h3><ol>
+<li><p><strong>初始化 Hexo 项目</strong>：<br>选择一个目录并初始化 Hexo 项目：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo init my-blog</span><br><span class="line"><span class="built_in">cd</span> my-blog</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>启动本地服务器</strong>：<br>初始化完成后，启动本地服务器查看博客效果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo server</span><br></pre></td></tr></table></figure>
+
+<p>打开浏览器，访问 <code>http://localhost:4000</code>，你应该能看到一个默认的 Hexo 博客。</p>
+</li>
+</ol>
+<h3 id="三、撰写博客文章"><a href="#三、撰写博客文章" class="headerlink" title="三、撰写博客文章"></a>三、撰写博客文章</h3><ol>
+<li><p><strong>创建新文章</strong>：<br>使用 Hexo 命令创建新文章：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new post <span class="string">&quot;My First Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>这将会在 <code>source/_posts</code> 目录下生成一个名为 <code>My-First-Post.md</code> 的 Markdown 文件。</p>
+</li>
+<li><p><strong>编辑文章</strong>：<br>打开生成的 Markdown 文件，撰写你的文章。</p>
+</li>
+</ol>
+<h3 id="四、生成静态文件"><a href="#四、生成静态文件" class="headerlink" title="四、生成静态文件"></a>四、生成静态文件</h3><ol>
+<li><p><strong>生成静态文件</strong>：<br>当你完成文章撰写后，生成静态文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>这会在 <code>public</code> 目录下生成所有静态文件。</p>
+</li>
+<li><p><strong>部署博客</strong>：<br>Hexo 支持多种部署方式，包括 GitHub Pages、SFTP、FTP 等。你可以在 <code>_config.yml</code> 文件中配置部署信息，然后使用以下命令进行部署：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>例如，如果你使用 GitHub Pages，可以在 <code>_config.yml</code> 中配置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">https://github.com/username/repo.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">gh-pages</span></span><br></pre></td></tr></table></figure>
+
+<p>然后安装部署插件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="五、设置主题和插件"><a href="#五、设置主题和插件" class="headerlink" title="五、设置主题和插件"></a>五、设置主题和插件</h3><ol>
+<li><p><strong>安装主题</strong>：<br>Hexo 有很多主题可供选择，你可以在 <a target="_blank" rel="noopener" href="https://hexo.io/themes/">Hexo 主题列表</a> 中找到喜欢的主题。</p>
+<p>下载并安装主题，例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/hexojs/hexo-theme-landscape themes/landscape</span><br></pre></td></tr></table></figure>
+
+<p>修改 <code>_config.yml</code> 文件中的 <code>theme</code> 字段：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">landscape</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>安装插件</strong>：<br>Hexo 社区提供了丰富的插件，你可以在 <a target="_blank" rel="noopener" href="https://hexo.io/plugins/">Hexo 插件列表</a> 中找到需要的插件。</p>
+<p>例如，安装分页插件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-generator-pagination --save</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>通过以上步骤，你已经成功使用 Hexo 搭建了一个静态博客。你可以进一步自定义主题、添加插件、优化配置，以满足你的需求。Hexo 社区提供了丰富的资源和文档，可以帮助你更好地使用这个强大的静态博客框架。</p>
+
+    </div>
+  </article>
+  
+  
+  </main>
+  <footer>
+    <p>&copy; 2024 John Doe</p>
+  </footer>
+</body>
+</html>
+

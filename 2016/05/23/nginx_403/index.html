@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hexo</title>
+  <link rel="stylesheet" href="/css/style.css">
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+  <header>
+    <h1><a href="https://haixuxu.github.io">Hexo</a></h1>
+    <nav>
+      
+        <a href="/">Home</a>
+      
+        <a href="/archives">Archives</a>
+      
+    </nav>
+  </header>
+  <main>
+    <article>
+    <h2>nginx 403错误</h2>
+    <p>2016-05-23</p>
+    <div class="post-content">
+      <h3 id="nginx-403错误"><a href="#nginx-403错误" class="headerlink" title="nginx 403错误"></a>nginx 403错误</h3><ol>
+<li>权限配置不正确</li>
+</ol>
+<p> nginx有2个进程，一个主进程，一个工作进程ps -ef|grep nginx 如下(第三行是grep进程)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root     10181     1  0 11:04 ?        00:00:00 nginx: master process nginx -c /var/wwwnginx/nginx/conf/nginx_temp.conf</span><br><span class="line">nginx    10182 10181  0 11:04 ?        00:00:00 nginx: worker process</span><br><span class="line">root     16250 32426  0 11:20 pts/8    00:00:00 grep --color=auto nginx</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>主进程跟nginx执行的当前用户有关</li>
+<li>工作进程跟nginx.conf配置相关(默认为nginx或者nobody) 使用use nginx(角色名); 配置</li>
+</ul>
+<p> 工作进程角色的权限不正确是nginx出现403 forbidden最常见的原因。<br> 为了保证文件能正确执行，nginx的工作进程角色既需要文件的读权限,又需要文件所有父目录的可执行权限。</p>
+<ul>
+<li><p>例如，当访问&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;html&#x2F;image.jpg时，nginx既需要image.jpg文件的可读权限，也需要&#x2F;,&#x2F;usr,&#x2F;usr&#x2F;local,&#x2F;usr&#x2F;local&#x2F;nginx,&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;html的可以执行权限。</p>
+</li>
+<li><p>1 解决办法:设置所有父目录为755权限，设置文件为644权限可以避免权限不正确。</p>
+</li>
+<li><p>2 如果必需要把目录放置在home目录，可以使用&#x2F;var(root,所有用户可读可执行r-x),使用符号链接的方式</p>
+</li>
+</ul>
+
+    </div>
+  </article>
+  
+  
+  </main>
+  <footer>
+    <p>&copy; 2024 John Doe</p>
+  </footer>
+</body>
+</html>
+

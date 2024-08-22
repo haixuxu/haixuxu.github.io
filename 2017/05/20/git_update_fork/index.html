@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hexo</title>
+  <link rel="stylesheet" href="/css/style.css">
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+  <header>
+    <h1><a href="https://haixuxu.github.io">Hexo</a></h1>
+    <nav>
+      
+        <a href="/">Home</a>
+      
+        <a href="/archives">Archives</a>
+      
+    </nav>
+  </header>
+  <main>
+    <article>
+    <h2>git update fork repo</h2>
+    <p>2017-05-20</p>
+    <div class="post-content">
+      <p>In your local clone of your forked repository, you can add the original GitHub repository as a “remote”. (“Remotes” are like nicknames for the URLs of repositories - origin is one, for example.) Then you can fetch all the branches from that upstream repository, and rebase your work to continue working on the upstream version. In terms of commands that might look like:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Add the remote, call it &quot;upstream&quot;:</span></span><br><span class="line"></span><br><span class="line">git remote add upstream https://github.com/whoever/whatever.git</span><br><span class="line"></span><br><span class="line"><span class="comment"># Fetch all the branches of that remote into remote-tracking branches,</span></span><br><span class="line"><span class="comment"># such as upstream/master:</span></span><br><span class="line"></span><br><span class="line">git fetch upstream</span><br><span class="line"></span><br><span class="line"><span class="comment"># Make sure that you&#x27;re on your master branch:</span></span><br><span class="line"></span><br><span class="line">git checkout master</span><br><span class="line"></span><br><span class="line"><span class="comment"># Rewrite your master branch so that any commits of yours that</span></span><br><span class="line"><span class="comment"># aren&#x27;t already in upstream/master are replayed on top of that</span></span><br><span class="line"><span class="comment"># other branch:</span></span><br><span class="line"></span><br><span class="line">git rebase upstream/master</span><br></pre></td></tr></table></figure>
+<p>If you don’t want to rewrite the history of your master branch, (for example because other people may have cloned it) then you should replace the last command with git merge upstream&#x2F;master. However, for making further pull requests that are as clean as possible, it’s probably better to rebase.</p>
+<p>If you’ve rebased your branch onto upstream&#x2F;master you may need to force the push in order to push it to your own forked repository on GitHub. You’d do that with:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push -f origin master</span><br></pre></td></tr></table></figure>
+<p>You only need to use the -f the first time after you’ve rebased.</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/7244321/how-do-i-update-a-github-forked-repository">stackoverflow</a></li>
+<li><a target="_blank" rel="noopener" href="https://help.github.com/articles/syncing-a-fork/">github</a></li>
+</ul>
+
+    </div>
+  </article>
+  
+  
+  </main>
+  <footer>
+    <p>&copy; 2024 John Doe</p>
+  </footer>
+</body>
+</html>
+
