@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main  # 或者你希望触发部署的其他分支
+env:
+  GIT_USER: xuxihai
+  GIT_EMAIL: xuxihai123@gmail.com
 
 jobs:
   build:
