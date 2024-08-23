@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main  # 或者你希望触发部署的其他分支
-env:
-  GIT_USER: xuxihai
-  GIT_EMAIL: xuxihai123@gmail.com
 
 jobs:
   build:
@@ -38,17 +35,18 @@ jobs:
     - name: Generate static files
       run: hexo generate
 
-    - name: Configuration environment
+    - name: Configuration environment and dep
       env:
         DEPLOY_KEY: ${{secrets.DEPLOY_KEY}}
       run: |
+        sudo apt-get update && sudo apt-get install -y openssh-client
+        eval "$(ssh-agent -s)"
         sudo timedatectl set-timezone "Asia/Shanghai"
         mkdir -p ~/.ssh/
         echo "$DEPLOY_KEY" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan github.com >> ~/.ssh/known_hosts
-        git config --global user.name $GIT_USER
-        git config --global user.email $GIT_EMAIL
+
     - name: Deploy to GitHub Pages
       run: hexo deploy
 
