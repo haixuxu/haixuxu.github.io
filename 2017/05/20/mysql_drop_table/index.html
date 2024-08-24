@@ -2,12 +2,13 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Hexo</title>
+  <title>一个人的小世界</title>
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/github.css">
 <meta name="generator" content="Hexo 7.3.0"></head>
 <body>
   <header>
-    <h1><a href="https://haixuxu.github.io">Hexo</a></h1>
+    <h1><a href="https://haixuxu.github.io">一个人的小世界</a></h1>
     <nav>
       
         <a href="/">Home</a>
@@ -24,7 +25,8 @@
       <h3 id="mysql删除表方式及区别"><a href="#mysql删除表方式及区别" class="headerlink" title="mysql删除表方式及区别"></a>mysql删除表方式及区别</h3><blockquote>
 <p>本文记录一下这2种操作模式的区别，目标对象是表wp_comments，里面的所有留言均是垃圾留言，均可删除。然后便有了以下2种方式（进入mysql操作界面后）：</p>
 </blockquote>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">truncate</span> <span class="keyword">table</span> wp_comments;</span><br><span class="line"><span class="keyword">delete</span> <span class="operator">*</span> <span class="keyword">from</span> wp_comments;</span><br></pre></td></tr></table></figure>
+<pre><code class="hljs sql"><span class="hljs-keyword">truncate</span> <span class="hljs-keyword">table</span> wp_comments;
+<span class="hljs-keyword">delete</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> wp_comments;</code></pre>
 <blockquote>
 <p>其中truncate操作中的table可以省略，delete操作中的*可以省略。这两者都是将wp_comments表中数据清空，不过也是有区别的，如下：</p>
 </blockquote>
@@ -43,8 +45,13 @@
   
   </main>
   <footer>
-    <p>&copy; 2024 John Doe</p>
+    <p>&copy; 2024 xuxihai</p>
   </footer>
+
+  <!-- 引入 Clipboard.js -->
+  <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
+  <script src="/js/linenumber.js"></script>
+  <script src="/js/copy.js"></script>
 </body>
 </html>
 

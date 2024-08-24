@@ -2,12 +2,13 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Hexo</title>
+  <title>一个人的小世界</title>
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/github.css">
 <meta name="generator" content="Hexo 7.3.0"></head>
 <body>
   <header>
-    <h1><a href="https://haixuxu.github.io">Hexo</a></h1>
+    <h1><a href="https://haixuxu.github.io">一个人的小世界</a></h1>
     <nav>
       
         <a href="/">Home</a>
@@ -21,21 +22,153 @@
     <h2>Servlet之过滤器实现权限拦截</h2>
     <p>2016-10-24</p>
     <div class="post-content">
-      <h2 id="编写一个Java类实现javax-servlet-Filter接口"><a href="#编写一个Java类实现javax-servlet-Filter接口" class="headerlink" title="编写一个Java类实现javax.servlet.Filter接口"></a>编写一个Java类实现javax.servlet.Filter接口</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.edu.sxu.filter;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.Filter;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.FilterChain;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.FilterConfig;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletException;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletResponse;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServlet;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PermissionFilter</span> <span class="keyword">implements</span> <span class="title class_">Filter</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String includeUrl;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">destroy</span><span class="params">()</span> &#123;</span><br><span class="line">	System.out.println(<span class="string">&quot;权限拦截销毁...&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doFilter</span><span class="params">(ServletRequest request, ServletResponse response,</span></span><br><span class="line"><span class="params">	    FilterChain chain)</span> <span class="keyword">throws</span> IOException, ServletException &#123;</span><br><span class="line">	<span class="type">HttpServletRequest</span> <span class="variable">req</span> <span class="operator">=</span> (HttpServletRequest)request;</span><br><span class="line">	<span class="type">HttpServletResponse</span> <span class="variable">resp</span> <span class="operator">=</span> (HttpServletResponse)response;</span><br><span class="line">	<span class="comment">//从会话中拿登录后session保存的uname</span></span><br><span class="line">	<span class="type">Object</span> <span class="variable">obj</span> <span class="operator">=</span> req.getSession().getAttribute(<span class="string">&quot;uname&quot;</span>);</span><br><span class="line">	<span class="comment">//获取请求路径</span></span><br><span class="line">	<span class="type">String</span> <span class="variable">path</span> <span class="operator">=</span> req.getServletPath();</span><br><span class="line">	<span class="comment">//如果会话中保存了uname或者访问路径在includeUrl中</span></span><br><span class="line">	<span class="keyword">if</span>(<span class="literal">null</span>!=obj||includeUrl.contains(path))</span><br><span class="line">	&#123;</span><br><span class="line">	    chain.doFilter(req,resp);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">	    System.out.println(<span class="string">&quot;重定向 ...&quot;</span>);</span><br><span class="line">	    resp.sendRedirect(req.getContextPath()+<span class="string">&quot;/login.jsp&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">(FilterConfig config)</span> <span class="keyword">throws</span> ServletException &#123;</span><br><span class="line">	System.out.println(<span class="string">&quot;权限拦截启用...&quot;</span>);</span><br><span class="line">	<span class="comment">//从web.xml中PermissionFilter加载参数获取可访问路径</span></span><br><span class="line">	<span class="built_in">this</span>.includeUrl = config.getInitParameter(<span class="string">&quot;includeUrl&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      <h2 id="编写一个Java类实现javax-servlet-Filter接口"><a href="#编写一个Java类实现javax-servlet-Filter接口" class="headerlink" title="编写一个Java类实现javax.servlet.Filter接口"></a>编写一个Java类实现javax.servlet.Filter接口</h2><pre><code class="hljs java"><span class="hljs-keyword">package</span> cn.edu.sxu.filter;
 
-<h2 id="在web-xml中配置此过滤器"><a href="#在web-xml中配置此过滤器" class="headerlink" title="在web.xml中配置此过滤器"></a>在web.xml中配置此过滤器</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>PermissionFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>cn.edu.sxu.filter.PermissionFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">param-name</span>&gt;</span>includeUrl<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span>  </span><br><span class="line">                <span class="comment">&lt;!--这里是允许通过的访问路径--&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">param-value</span>&gt;</span>/index.jsp,/login.jsp,/register.jsp<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>PermissionFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<span class="hljs-keyword">import</span> java.io.IOException;
+
+<span class="hljs-keyword">import</span> javax.servlet.Filter;
+<span class="hljs-keyword">import</span> javax.servlet.FilterChain;
+<span class="hljs-keyword">import</span> javax.servlet.FilterConfig;
+<span class="hljs-keyword">import</span> javax.servlet.ServletException;
+<span class="hljs-keyword">import</span> javax.servlet.ServletRequest;
+<span class="hljs-keyword">import</span> javax.servlet.ServletResponse;
+<span class="hljs-keyword">import</span> javax.servlet.http.HttpServlet;
+<span class="hljs-keyword">import</span> javax.servlet.http.HttpServletRequest;
+<span class="hljs-keyword">import</span> javax.servlet.http.HttpServletResponse;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">PermissionFilter</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Filter</span> &#123;
+    <span class="hljs-keyword">private</span> String includeUrl;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">destroy</span><span class="hljs-params">()</span> &#123;
+	System.out.println(<span class="hljs-string">&quot;权限拦截销毁...&quot;</span>);
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doFilter</span><span class="hljs-params">(ServletRequest request, ServletResponse response,</span>
+<span class="hljs-params">	    FilterChain chain)</span> <span class="hljs-keyword">throws</span> IOException, ServletException &#123;
+	<span class="hljs-type">HttpServletRequest</span> <span class="hljs-variable">req</span> <span class="hljs-operator">=</span> (HttpServletRequest)request;
+	<span class="hljs-type">HttpServletResponse</span> <span class="hljs-variable">resp</span> <span class="hljs-operator">=</span> (HttpServletResponse)response;
+	<span class="hljs-comment">//从会话中拿登录后session保存的uname</span>
+	<span class="hljs-type">Object</span> <span class="hljs-variable">obj</span> <span class="hljs-operator">=</span> req.getSession().getAttribute(<span class="hljs-string">&quot;uname&quot;</span>);
+	<span class="hljs-comment">//获取请求路径</span>
+	<span class="hljs-type">String</span> <span class="hljs-variable">path</span> <span class="hljs-operator">=</span> req.getServletPath();
+	<span class="hljs-comment">//如果会话中保存了uname或者访问路径在includeUrl中</span>
+	<span class="hljs-keyword">if</span>(<span class="hljs-literal">null</span>!=obj||includeUrl.contains(path))
+	&#123;
+	    chain.doFilter(req,resp);
+	&#125;
+	<span class="hljs-keyword">else</span>
+	&#123;
+	    System.out.println(<span class="hljs-string">&quot;重定向 ...&quot;</span>);
+	    resp.sendRedirect(req.getContextPath()+<span class="hljs-string">&quot;/login.jsp&quot;</span>);
+	&#125;
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">init</span><span class="hljs-params">(FilterConfig config)</span> <span class="hljs-keyword">throws</span> ServletException &#123;
+	System.out.println(<span class="hljs-string">&quot;权限拦截启用...&quot;</span>);
+	<span class="hljs-comment">//从web.xml中PermissionFilter加载参数获取可访问路径</span>
+	<span class="hljs-built_in">this</span>.includeUrl = config.getInitParameter(<span class="hljs-string">&quot;includeUrl&quot;</span>);
+    &#125;
+
+&#125;</code></pre>
+
+<h2 id="在web-xml中配置此过滤器"><a href="#在web-xml中配置此过滤器" class="headerlink" title="在web.xml中配置此过滤器"></a>在web.xml中配置此过滤器</h2><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">filter</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">filter-name</span>&gt;</span>PermissionFilter<span class="hljs-tag">&lt;/<span class="hljs-name">filter-name</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">filter-class</span>&gt;</span>cn.edu.sxu.filter.PermissionFilter<span class="hljs-tag">&lt;/<span class="hljs-name">filter-class</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">init-param</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">param-name</span>&gt;</span>includeUrl<span class="hljs-tag">&lt;/<span class="hljs-name">param-name</span>&gt;</span>  
+                <span class="hljs-comment">&lt;!--这里是允许通过的访问路径--&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">param-value</span>&gt;</span>/index.jsp,/login.jsp,/register.jsp<span class="hljs-tag">&lt;/<span class="hljs-name">param-value</span>&gt;</span>
+	<span class="hljs-tag">&lt;/<span class="hljs-name">init-param</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">filter</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">filter-mapping</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">filter-name</span>&gt;</span>PermissionFilter<span class="hljs-tag">&lt;/<span class="hljs-name">filter-name</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">url-pattern</span>&gt;</span>/*<span class="hljs-tag">&lt;/<span class="hljs-name">url-pattern</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">filter-mapping</span>&gt;</span></code></pre>
 <p>以上就可以实现权限拦截功能了</p>
 <h2 id="与Struts2整合"><a href="#与Struts2整合" class="headerlink" title="与Struts2整合"></a>与Struts2整合</h2><p>下面将此过滤器与struts2中StrutsPrepareAndExecuteFilter过滤器整合代码 </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.sky.bookshop.filter;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.FilterChain;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.FilterConfig;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletException;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletResponse;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.struts2.dispatcher.Dispatcher;</span><br><span class="line"><span class="keyword">import</span> org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> cn.sky.bookshop.utils.DateUtil;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StrutsExtendsI18nFilter</span> <span class="keyword">extends</span> <span class="title class_">StrutsPrepareAndExecuteFilter</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String includeUrl;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">(FilterConfig filterConfig)</span> <span class="keyword">throws</span> ServletException &#123;</span><br><span class="line">	<span class="built_in">this</span>.includeUrl = filterConfig.getInitParameter(<span class="string">&quot;includeUrl&quot;</span>);</span><br><span class="line">	<span class="built_in">super</span>.init(filterConfig); <span class="comment">// 调用父类(struts2核心过滤器的初始化方法)初始化方法初始化</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">postInit</span><span class="params">(Dispatcher dispatcher, FilterConfig filterConfig)</span> &#123;</span><br><span class="line">	System.out.println(<span class="string">&quot;这里你可以让struts2初始化再做些什么事。。。&quot;</span>);</span><br><span class="line">	<span class="built_in">super</span>.postInit(dispatcher, filterConfig); <span class="comment">// 父类这个方法是空的,这句话是废话</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doFilter</span><span class="params">(ServletRequest request, ServletResponse response,</span></span><br><span class="line"><span class="params">	    FilterChain chain)</span> <span class="keyword">throws</span> IOException, ServletException &#123;</span><br><span class="line">	<span class="comment">// 使用国际化封装request,重写getLocale()方法</span></span><br><span class="line">	<span class="type">HttpServletRequest</span> <span class="variable">myrequest</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyHttpRequest</span>((HttpServletRequest) request);</span><br><span class="line">	<span class="type">HttpServletResponse</span> <span class="variable">resp</span> <span class="operator">=</span> (HttpServletResponse) response;</span><br><span class="line">	<span class="comment">//获取会话session里的uname</span></span><br><span class="line">	<span class="type">Object</span> <span class="variable">obj</span> <span class="operator">=</span> myrequest.getSession().getAttribute(<span class="string">&quot;uname&quot;</span>);</span><br><span class="line">	<span class="comment">//获取访问路径</span></span><br><span class="line">	<span class="type">String</span> <span class="variable">path</span> <span class="operator">=</span> myrequest.getServletPath();</span><br><span class="line">	<span class="comment">//如果session中存在uname,或includeUrl中包含了访问路径path</span></span><br><span class="line">	<span class="keyword">if</span> (<span class="literal">null</span> != obj || includeUrl.contains(path)) &#123;</span><br><span class="line">	    <span class="comment">// 调用父类Struts2核心过滤器的doFilter方法</span></span><br><span class="line">	    <span class="built_in">super</span>.doFilter(myrequest, response, chain);</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	    <span class="comment">// 重定向回登录页面</span></span><br><span class="line">	    resp.sendRedirect(myrequest.getContextPath() + <span class="string">&quot;/login.jsp&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// super.doFilter(myrequest, response, chain);</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">destroy</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="在web-xml中的配置"><a href="#在web-xml中的配置" class="headerlink" title="在web.xml中的配置"></a>在web.xml中的配置</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>struts2.3<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>cn.sky.bookshop.filter.StrutsExtendsI18nFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">param-name</span>&gt;</span>includeUrl<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">param-value</span>&gt;</span>/login.jsp,/register.jsp,/index.jsp,/user/user_login.action<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>struts2.3<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><code class="hljs java"><span class="hljs-keyword">package</span> cn.sky.bookshop.filter;
+
+<span class="hljs-keyword">import</span> java.io.IOException;
+
+<span class="hljs-keyword">import</span> javax.servlet.FilterChain;
+<span class="hljs-keyword">import</span> javax.servlet.FilterConfig;
+<span class="hljs-keyword">import</span> javax.servlet.ServletException;
+<span class="hljs-keyword">import</span> javax.servlet.ServletRequest;
+<span class="hljs-keyword">import</span> javax.servlet.ServletResponse;
+<span class="hljs-keyword">import</span> javax.servlet.http.HttpServletRequest;
+<span class="hljs-keyword">import</span> javax.servlet.http.HttpServletResponse;
+
+<span class="hljs-keyword">import</span> org.apache.struts2.dispatcher.Dispatcher;
+<span class="hljs-keyword">import</span> org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter;
+
+<span class="hljs-keyword">import</span> cn.sky.bookshop.utils.DateUtil;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">StrutsExtendsI18nFilter</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">StrutsPrepareAndExecuteFilter</span> &#123;
+    <span class="hljs-keyword">private</span> String includeUrl;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">init</span><span class="hljs-params">(FilterConfig filterConfig)</span> <span class="hljs-keyword">throws</span> ServletException &#123;
+	<span class="hljs-built_in">this</span>.includeUrl = filterConfig.getInitParameter(<span class="hljs-string">&quot;includeUrl&quot;</span>);
+	<span class="hljs-built_in">super</span>.init(filterConfig); <span class="hljs-comment">// 调用父类(struts2核心过滤器的初始化方法)初始化方法初始化</span>
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">postInit</span><span class="hljs-params">(Dispatcher dispatcher, FilterConfig filterConfig)</span> &#123;
+	System.out.println(<span class="hljs-string">&quot;这里你可以让struts2初始化再做些什么事。。。&quot;</span>);
+	<span class="hljs-built_in">super</span>.postInit(dispatcher, filterConfig); <span class="hljs-comment">// 父类这个方法是空的,这句话是废话</span>
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doFilter</span><span class="hljs-params">(ServletRequest request, ServletResponse response,</span>
+<span class="hljs-params">	    FilterChain chain)</span> <span class="hljs-keyword">throws</span> IOException, ServletException &#123;
+	<span class="hljs-comment">// 使用国际化封装request,重写getLocale()方法</span>
+	<span class="hljs-type">HttpServletRequest</span> <span class="hljs-variable">myrequest</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyHttpRequest</span>((HttpServletRequest) request);
+	<span class="hljs-type">HttpServletResponse</span> <span class="hljs-variable">resp</span> <span class="hljs-operator">=</span> (HttpServletResponse) response;
+	<span class="hljs-comment">//获取会话session里的uname</span>
+	<span class="hljs-type">Object</span> <span class="hljs-variable">obj</span> <span class="hljs-operator">=</span> myrequest.getSession().getAttribute(<span class="hljs-string">&quot;uname&quot;</span>);
+	<span class="hljs-comment">//获取访问路径</span>
+	<span class="hljs-type">String</span> <span class="hljs-variable">path</span> <span class="hljs-operator">=</span> myrequest.getServletPath();
+	<span class="hljs-comment">//如果session中存在uname,或includeUrl中包含了访问路径path</span>
+	<span class="hljs-keyword">if</span> (<span class="hljs-literal">null</span> != obj || includeUrl.contains(path)) &#123;
+	    <span class="hljs-comment">// 调用父类Struts2核心过滤器的doFilter方法</span>
+	    <span class="hljs-built_in">super</span>.doFilter(myrequest, response, chain);
+	&#125; <span class="hljs-keyword">else</span> &#123;
+	    <span class="hljs-comment">// 重定向回登录页面</span>
+	    resp.sendRedirect(myrequest.getContextPath() + <span class="hljs-string">&quot;/login.jsp&quot;</span>);
+	&#125;
+	<span class="hljs-comment">// super.doFilter(myrequest, response, chain);</span>
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">destroy</span><span class="hljs-params">()</span> &#123;
+    &#125;
+
+&#125;</code></pre>
+<h2 id="在web-xml中的配置"><a href="#在web-xml中的配置" class="headerlink" title="在web.xml中的配置"></a>在web.xml中的配置</h2><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">filter</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">filter-name</span>&gt;</span>struts2.3<span class="hljs-tag">&lt;/<span class="hljs-name">filter-name</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">filter-class</span>&gt;</span>cn.sky.bookshop.filter.StrutsExtendsI18nFilter<span class="hljs-tag">&lt;/<span class="hljs-name">filter-class</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">init-param</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">param-name</span>&gt;</span>includeUrl<span class="hljs-tag">&lt;/<span class="hljs-name">param-name</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">param-value</span>&gt;</span>/login.jsp,/register.jsp,/index.jsp,/user/user_login.action<span class="hljs-tag">&lt;/<span class="hljs-name">param-value</span>&gt;</span>
+	<span class="hljs-tag">&lt;/<span class="hljs-name">init-param</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">filter</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">filter-mapping</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">filter-name</span>&gt;</span>struts2.3<span class="hljs-tag">&lt;/<span class="hljs-name">filter-name</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">url-pattern</span>&gt;</span>/*<span class="hljs-tag">&lt;/<span class="hljs-name">url-pattern</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">filter-mapping</span>&gt;</span></code></pre>
     </div>
   </article>
   
   
   </main>
   <footer>
-    <p>&copy; 2024 John Doe</p>
+    <p>&copy; 2024 xuxihai</p>
   </footer>
+
+  <!-- 引入 Clipboard.js -->
+  <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
+  <script src="/js/linenumber.js"></script>
+  <script src="/js/copy.js"></script>
 </body>
 </html>
 

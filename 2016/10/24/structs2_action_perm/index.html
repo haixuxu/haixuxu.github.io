@@ -2,12 +2,13 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Hexo</title>
+  <title>一个人的小世界</title>
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/github.css">
 <meta name="generator" content="Hexo 7.3.0"></head>
 <body>
   <header>
-    <h1><a href="https://haixuxu.github.io">Hexo</a></h1>
+    <h1><a href="https://haixuxu.github.io">一个人的小世界</a></h1>
     <nav>
       
         <a href="/">Home</a>
@@ -22,10 +23,72 @@
     <p>2016-10-24</p>
     <div class="post-content">
       <h2 id="编写一个类实现com-opensymphony-xwork2-interceptor-Interceptor接口"><a href="#编写一个类实现com-opensymphony-xwork2-interceptor-Interceptor接口" class="headerlink" title="编写一个类实现com.opensymphony.xwork2.interceptor.Interceptor接口"></a>编写一个类实现com.opensymphony.xwork2.interceptor.Interceptor接口</h2><p>PermissionInterceptor.java</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.sky.bookshop.interceptor;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.struts2.ServletActionContext;</span><br><span class="line"><span class="keyword">import</span> cn.sky.bookshop.utils.DateUtil;</span><br><span class="line"><span class="keyword">import</span> com.opensymphony.xwork2.ActionInvocation;</span><br><span class="line"><span class="keyword">import</span> com.opensymphony.xwork2.interceptor.Interceptor;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PermissionInterceptor</span> <span class="keyword">implements</span> <span class="title class_">Interceptor</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">serialVersionUID</span> <span class="operator">=</span> -<span class="number">1908127830415801520L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String includeUrl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">destroy</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">intercept</span><span class="params">(ActionInvocation invocation)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">	<span class="comment">//会话session中取出uname</span></span><br><span class="line">	<span class="type">Object</span> <span class="variable">obj</span> <span class="operator">=</span> ServletActionContext.getRequest().getSession().getAttribute(<span class="string">&quot;uname&quot;</span>);</span><br><span class="line">	<span class="comment">//获取访问路径</span></span><br><span class="line">	<span class="type">String</span> <span class="variable">path</span> <span class="operator">=</span> ServletActionContext.getRequest().getServletPath();</span><br><span class="line">	<span class="comment">//如果存在uname或者访问路径包含在includeUrl中</span></span><br><span class="line">	<span class="keyword">if</span> (obj != <span class="literal">null</span> || includeUrl.contains(path)) &#123;</span><br><span class="line">	    <span class="keyword">return</span> invocation.invoke(); <span class="comment">//继续调用下一个拦截器，如果没有则执行Action</span></span><br><span class="line">	&#125;</span><br><span class="line">	ServletActionContext.getRequest().setAttribute(<span class="string">&quot;errorInfo&quot;</span>,<span class="string">&quot;No permission to operate the page&quot;</span>);<span class="comment">//保存错误信息</span></span><br><span class="line">	<span class="keyword">return</span> <span class="string">&quot;disallow&quot;</span>;<span class="comment">//返回视图</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getIncludeUrl</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> includeUrl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setIncludeUrl</span><span class="params">(String includeUrl)</span> &#123;</span><br><span class="line">	<span class="built_in">this</span>.includeUrl = includeUrl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="hljs java"><span class="hljs-keyword">package</span> cn.sky.bookshop.interceptor;
+
+<span class="hljs-keyword">import</span> org.apache.struts2.ServletActionContext;
+<span class="hljs-keyword">import</span> cn.sky.bookshop.utils.DateUtil;
+<span class="hljs-keyword">import</span> com.opensymphony.xwork2.ActionInvocation;
+<span class="hljs-keyword">import</span> com.opensymphony.xwork2.interceptor.Interceptor;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">PermissionInterceptor</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Interceptor</span> &#123;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> <span class="hljs-variable">serialVersionUID</span> <span class="hljs-operator">=</span> -<span class="hljs-number">1908127830415801520L</span>;
+
+    <span class="hljs-keyword">private</span> String includeUrl;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">destroy</span><span class="hljs-params">()</span> &#123;
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">init</span><span class="hljs-params">()</span> &#123;
+    &#125;
+
+    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">intercept</span><span class="hljs-params">(ActionInvocation invocation)</span> <span class="hljs-keyword">throws</span> Exception &#123;
+	<span class="hljs-comment">//会话session中取出uname</span>
+	<span class="hljs-type">Object</span> <span class="hljs-variable">obj</span> <span class="hljs-operator">=</span> ServletActionContext.getRequest().getSession().getAttribute(<span class="hljs-string">&quot;uname&quot;</span>);
+	<span class="hljs-comment">//获取访问路径</span>
+	<span class="hljs-type">String</span> <span class="hljs-variable">path</span> <span class="hljs-operator">=</span> ServletActionContext.getRequest().getServletPath();
+	<span class="hljs-comment">//如果存在uname或者访问路径包含在includeUrl中</span>
+	<span class="hljs-keyword">if</span> (obj != <span class="hljs-literal">null</span> || includeUrl.contains(path)) &#123;
+	    <span class="hljs-keyword">return</span> invocation.invoke(); <span class="hljs-comment">//继续调用下一个拦截器，如果没有则执行Action</span>
+	&#125;
+	ServletActionContext.getRequest().setAttribute(<span class="hljs-string">&quot;errorInfo&quot;</span>,<span class="hljs-string">&quot;No permission to operate the page&quot;</span>);<span class="hljs-comment">//保存错误信息</span>
+	<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;disallow&quot;</span>;<span class="hljs-comment">//返回视图</span>
+    &#125;
+
+    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getIncludeUrl</span><span class="hljs-params">()</span> &#123;
+	<span class="hljs-keyword">return</span> includeUrl;
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setIncludeUrl</span><span class="hljs-params">(String includeUrl)</span> &#123;
+	<span class="hljs-built_in">this</span>.includeUrl = includeUrl;
+    &#125;
+&#125;</code></pre>
 
 <h2 id="配置struts-xml-文件"><a href="#配置struts-xml-文件" class="headerlink" title="配置struts.xml 文件"></a>配置struts.xml 文件</h2><p>1	定义一个自己的默认包</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">package</span> <span class="attr">name</span>=<span class="string">&quot;my-struts-default&quot;</span> <span class="attr">namespace</span>=<span class="string">&quot;/&quot;</span> <span class="attr">extends</span>=<span class="string">&quot;struts-default&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">		<span class="tag">&lt;<span class="name">interceptors</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 这里是定义一个拦截器 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">interceptor</span> <span class="attr">name</span>=<span class="string">&quot;permission&quot;</span> <span class="attr">class</span>=<span class="string">&quot;cn.sky.bookshop.interceptor.PermissionInterceptor&quot;</span>&gt;</span></span><br><span class="line">					<span class="comment">&lt;!-- 拦截器的初始化注入参数 --&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;includeUrl&quot;</span>&gt;</span>/user/user_login.action,/getcode<span class="tag">&lt;/<span class="name">param</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">interceptor</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 这里定义一个拦截器栈 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">interceptor-stack</span> <span class="attr">name</span>=<span class="string">&quot;myDefalutStack&quot;</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">interceptor-ref</span> <span class="attr">name</span>=<span class="string">&quot;defaultStack&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">interceptor-ref</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">interceptor-ref</span> <span class="attr">name</span>=<span class="string">&quot;permission&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">interceptor-ref</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">interceptor-stack</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">interceptors</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!--设置默认的拦截器栈(访问Action前默认调用)--&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">default-interceptor-ref</span> <span class="attr">name</span>=<span class="string">&quot;myDefalutStack&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">default-interceptor-ref</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 全局result --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">global-results</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">result</span> <span class="attr">name</span>=<span class="string">&quot;disallow&quot;</span> <span class="attr">type</span>=<span class="string">&quot;redirect&quot;</span>&gt;</span>/login.jsp<span class="tag">&lt;/<span class="name">result</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">global-results</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">action</span> <span class="attr">name</span>=<span class="string">&quot;getcode&quot;</span> <span class="attr">class</span>=<span class="string">&quot;cn.sky.bookshop.action.VerifyCodeAction&quot;</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">action</span>&gt;</span></span><br><span class="line"></span><br><span class="line">	<span class="tag">&lt;/<span class="name">package</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">package</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;my-struts-default&quot;</span> <span class="hljs-attr">namespace</span>=<span class="hljs-string">&quot;/&quot;</span> <span class="hljs-attr">extends</span>=<span class="hljs-string">&quot;struts-default&quot;</span>&gt;</span>
+
+		<span class="hljs-tag">&lt;<span class="hljs-name">interceptors</span>&gt;</span>
+			<span class="hljs-comment">&lt;!-- 这里是定义一个拦截器 --&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">interceptor</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;permission&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;cn.sky.bookshop.interceptor.PermissionInterceptor&quot;</span>&gt;</span>
+					<span class="hljs-comment">&lt;!-- 拦截器的初始化注入参数 --&gt;</span>
+					<span class="hljs-tag">&lt;<span class="hljs-name">param</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;includeUrl&quot;</span>&gt;</span>/user/user_login.action,/getcode<span class="hljs-tag">&lt;/<span class="hljs-name">param</span>&gt;</span>
+			<span class="hljs-tag">&lt;/<span class="hljs-name">interceptor</span>&gt;</span>
+			<span class="hljs-comment">&lt;!-- 这里定义一个拦截器栈 --&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">interceptor-stack</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;myDefalutStack&quot;</span>&gt;</span>
+				<span class="hljs-tag">&lt;<span class="hljs-name">interceptor-ref</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;defaultStack&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">interceptor-ref</span>&gt;</span>
+				<span class="hljs-tag">&lt;<span class="hljs-name">interceptor-ref</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;permission&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">interceptor-ref</span>&gt;</span>
+			<span class="hljs-tag">&lt;/<span class="hljs-name">interceptor-stack</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">interceptors</span>&gt;</span>
+		<span class="hljs-comment">&lt;!--设置默认的拦截器栈(访问Action前默认调用)--&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">default-interceptor-ref</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;myDefalutStack&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">default-interceptor-ref</span>&gt;</span>
+		<span class="hljs-comment">&lt;!-- 全局result --&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">global-results</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;disallow&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;redirect&quot;</span>&gt;</span>/login.jsp<span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">global-results</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">action</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;getcode&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;cn.sky.bookshop.action.VerifyCodeAction&quot;</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+
+	<span class="hljs-tag">&lt;/<span class="hljs-name">package</span>&gt;</span></code></pre>
 <p>2	以后的包都继承上面my-struts-default</p>
 <h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>这里只能实现对访问Action时实现拦截，对jsp的访问不可能实现拦截。(可以将自定义拦截器栈中的默认拦截器<br>defaultStack注释掉，访问jsp发现根本没执行过此拦截器。可想而知，在拦截器工作之前对jsp的页面请求已经做出响应了。)</p>
 
@@ -35,8 +98,13 @@
   
   </main>
   <footer>
-    <p>&copy; 2024 John Doe</p>
+    <p>&copy; 2024 xuxihai</p>
   </footer>
+
+  <!-- 引入 Clipboard.js -->
+  <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
+  <script src="/js/linenumber.js"></script>
+  <script src="/js/copy.js"></script>
 </body>
 </html>
 

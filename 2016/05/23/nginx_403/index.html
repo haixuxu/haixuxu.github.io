@@ -2,12 +2,13 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Hexo</title>
+  <title>一个人的小世界</title>
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/github.css">
 <meta name="generator" content="Hexo 7.3.0"></head>
 <body>
   <header>
-    <h1><a href="https://haixuxu.github.io">Hexo</a></h1>
+    <h1><a href="https://haixuxu.github.io">一个人的小世界</a></h1>
     <nav>
       
         <a href="/">Home</a>
@@ -25,7 +26,9 @@
 <li>权限配置不正确</li>
 </ol>
 <p> nginx有2个进程，一个主进程，一个工作进程ps -ef|grep nginx 如下(第三行是grep进程)</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root     10181     1  0 11:04 ?        00:00:00 nginx: master process nginx -c /var/wwwnginx/nginx/conf/nginx_temp.conf</span><br><span class="line">nginx    10182 10181  0 11:04 ?        00:00:00 nginx: worker process</span><br><span class="line">root     16250 32426  0 11:20 pts/8    00:00:00 grep --color=auto nginx</span><br></pre></td></tr></table></figure>
+<pre><code class="hljs plaintext">root     10181     1  0 11:04 ?        00:00:00 nginx: master process nginx -c /var/wwwnginx/nginx/conf/nginx_temp.conf
+nginx    10182 10181  0 11:04 ?        00:00:00 nginx: worker process
+root     16250 32426  0 11:20 pts/8    00:00:00 grep --color=auto nginx</code></pre>
 
 <ul>
 <li>主进程跟nginx执行的当前用户有关</li>
@@ -47,8 +50,13 @@
   
   </main>
   <footer>
-    <p>&copy; 2024 John Doe</p>
+    <p>&copy; 2024 xuxihai</p>
   </footer>
+
+  <!-- 引入 Clipboard.js -->
+  <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
+  <script src="/js/linenumber.js"></script>
+  <script src="/js/copy.js"></script>
 </body>
 </html>
 

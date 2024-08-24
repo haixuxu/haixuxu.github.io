@@ -2,12 +2,13 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Hexo</title>
+  <title>一个人的小世界</title>
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/github.css">
 <meta name="generator" content="Hexo 7.3.0"></head>
 <body>
   <header>
-    <h1><a href="https://haixuxu.github.io">Hexo</a></h1>
+    <h1><a href="https://haixuxu.github.io">一个人的小世界</a></h1>
     <nav>
       
         <a href="/">Home</a>
@@ -22,29 +23,245 @@
     <p>2016-10-24</p>
     <div class="post-content">
       <h3 id="mybatis使用入门"><a href="#mybatis使用入门" class="headerlink" title="mybatis使用入门"></a>mybatis使用入门</h3><p>1.编写全局配置文件configuration.xml</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span> ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">configuration</span></span></span><br><span class="line"><span class="meta">    <span class="keyword">PUBLIC</span> <span class="string">&quot;-//mybatis.org//DTD Config 3.0//EN&quot;</span></span></span><br><span class="line"><span class="meta">    <span class="string">&quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">typeAliases</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--给实体类起一个别名 user --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">typeAlias</span> <span class="attr">type</span>=<span class="string">&quot;cn.sky.bookshop.beans.User&quot;</span> <span class="attr">alias</span>=<span class="string">&quot;User&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">typeAliases</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--数据源配置  这块用 mysql数据库 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">environments</span> <span class="attr">default</span>=<span class="string">&quot;development&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">environment</span> <span class="attr">id</span>=<span class="string">&quot;development&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">transactionManager</span> <span class="attr">type</span>=<span class="string">&quot;jdbc&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">dataSource</span> <span class="attr">type</span>=<span class="string">&quot;POOLED&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;driver&quot;</span> <span class="attr">value</span>=<span class="string">&quot;com.mysql.jdbc.Driver&quot;</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;url&quot;</span> <span class="attr">value</span>=<span class="string">&quot;jdbc:mysql://localhost:3306/ibatis&quot;</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span> <span class="attr">value</span>=<span class="string">&quot;root&quot;</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;215890&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">dataSource</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">environment</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">environments</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mappers</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--userMapper.xml装载进来  同等于把“dao”的实现装载进来 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">mapper</span> <span class="attr">resource</span>=<span class="string">&quot;User.xml&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">mapper</span> <span class="attr">resource</span>=<span class="string">&quot;UserMapper.xml&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mappers</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span> ?&gt;</span>
+<span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">configuration</span></span>
+<span class="hljs-meta">    <span class="hljs-keyword">PUBLIC</span> <span class="hljs-string">&quot;-//mybatis.org//DTD Config 3.0//EN&quot;</span></span>
+<span class="hljs-meta">    <span class="hljs-string">&quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">typeAliases</span>&gt;</span>
+        <span class="hljs-comment">&lt;!--给实体类起一个别名 user --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">typeAlias</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;cn.sky.bookshop.beans.User&quot;</span> <span class="hljs-attr">alias</span>=<span class="hljs-string">&quot;User&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">typeAliases</span>&gt;</span>
+    <span class="hljs-comment">&lt;!--数据源配置  这块用 mysql数据库 --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">environments</span> <span class="hljs-attr">default</span>=<span class="hljs-string">&quot;development&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">environment</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;development&quot;</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">transactionManager</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;jdbc&quot;</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">dataSource</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;POOLED&quot;</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;driver&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;com.mysql.jdbc.Driver&quot;</span> /&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;url&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;jdbc:mysql://localhost:3306/ibatis&quot;</span> /&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;username&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;root&quot;</span> /&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;password&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;215890&quot;</span> /&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dataSource</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">environment</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">environments</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">mappers</span>&gt;</span>
+        <span class="hljs-comment">&lt;!--userMapper.xml装载进来  同等于把“dao”的实现装载进来 --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">mapper</span> <span class="hljs-attr">resource</span>=<span class="hljs-string">&quot;User.xml&quot;</span> /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">mapper</span> <span class="hljs-attr">resource</span>=<span class="hljs-string">&quot;UserMapper.xml&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">mappers</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span></code></pre>
 <p>2.这里编写一个MyBatis工具类</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.sky.bookshop.utils;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.io.Resources;</span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSession;</span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSessionFactory;</span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSessionFactoryBuilder;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">MyBatisUtil</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> SqlSessionFactory sessionFactory;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">String</span> <span class="variable">resource</span> <span class="operator">=</span> <span class="string">&quot;configuration.xml&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        sessionFactory = <span class="keyword">new</span> <span class="title class_">SqlSessionFactoryBuilder</span>()<span class="comment">//</span></span><br><span class="line">                .build(Resources<span class="comment">//</span></span><br><span class="line">            .getResourceAsReader(resource));</span><br><span class="line">        <span class="comment">// sessionFactory.getConfiguration().addMapper(UserDao.class);</span></span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> SqlSession <span class="title function_">getSqlSession</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> sessionFactory.openSession();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="hljs java"><span class="hljs-keyword">package</span> cn.sky.bookshop.utils;
+<span class="hljs-keyword">import</span> java.io.IOException;
+<span class="hljs-keyword">import</span> org.apache.ibatis.io.Resources;
+<span class="hljs-keyword">import</span> org.apache.ibatis.session.SqlSession;
+<span class="hljs-keyword">import</span> org.apache.ibatis.session.SqlSessionFactory;
+<span class="hljs-keyword">import</span> org.apache.ibatis.session.SqlSessionFactoryBuilder;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyBatisUtil</span> &#123;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> SqlSessionFactory sessionFactory;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-type">String</span> <span class="hljs-variable">resource</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;configuration.xml&quot;</span>;
+
+    <span class="hljs-keyword">static</span> &#123;
+    <span class="hljs-keyword">try</span> &#123;
+        sessionFactory = <span class="hljs-keyword">new</span> <span class="hljs-title class_">SqlSessionFactoryBuilder</span>()<span class="hljs-comment">//</span>
+                .build(Resources<span class="hljs-comment">//</span>
+            .getResourceAsReader(resource));
+        <span class="hljs-comment">// sessionFactory.getConfiguration().addMapper(UserDao.class);</span>
+    &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;
+        e.printStackTrace();
+    &#125;
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> SqlSession <span class="hljs-title function_">getSqlSession</span><span class="hljs-params">()</span> &#123;
+    <span class="hljs-keyword">return</span> sessionFactory.openSession();
+    &#125;
+&#125;</code></pre>
 <p>然后接可以先建立一个测试类加载测试一番了。。</p>
 <p>3.按Javabean规范写的一个User类</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.sky.bookshop.beans;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> id;</span><br><span class="line">    <span class="keyword">private</span> String userName;</span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line">    <span class="keyword">private</span> String email;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getId</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> id;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setId</span><span class="params">(<span class="type">int</span> id)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.id = id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getPassword</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> password;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setPassword</span><span class="params">(String password)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.password = password;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getEmail</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> email;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setEmail</span><span class="params">(String email)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.email = email;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getUserName</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> userName;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setUserName</span><span class="params">(String userName)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.userName = userName;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;User [email=&quot;</span> + email + <span class="string">&quot;, id=&quot;</span> + id + <span class="string">&quot;, password=&quot;</span> + password</span><br><span class="line">        + <span class="string">&quot;, username=&quot;</span> + userName + <span class="string">&quot;]&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="hljs java"><span class="hljs-keyword">package</span> cn.sky.bookshop.beans;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> &#123;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> id;
+    <span class="hljs-keyword">private</span> String userName;
+    <span class="hljs-keyword">private</span> String password;
+    <span class="hljs-keyword">private</span> String email;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getId</span><span class="hljs-params">()</span> &#123;
+        <span class="hljs-keyword">return</span> id;
+    &#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setId</span><span class="hljs-params">(<span class="hljs-type">int</span> id)</span> &#123;
+        <span class="hljs-built_in">this</span>.id = id;
+    &#125;
+
+    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getPassword</span><span class="hljs-params">()</span> &#123;
+        <span class="hljs-keyword">return</span> password;
+    &#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setPassword</span><span class="hljs-params">(String password)</span> &#123;
+        <span class="hljs-built_in">this</span>.password = password;
+    &#125;
+    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getEmail</span><span class="hljs-params">()</span> &#123;
+        <span class="hljs-keyword">return</span> email;
+    &#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setEmail</span><span class="hljs-params">(String email)</span> &#123;
+        <span class="hljs-built_in">this</span>.email = email;
+    &#125;
+    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getUserName</span><span class="hljs-params">()</span> &#123;
+        <span class="hljs-keyword">return</span> userName;
+    &#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setUserName</span><span class="hljs-params">(String userName)</span> &#123;
+        <span class="hljs-built_in">this</span>.userName = userName;
+    &#125;
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">toString</span><span class="hljs-params">()</span> &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;User [email=&quot;</span> + email + <span class="hljs-string">&quot;, id=&quot;</span> + id + <span class="hljs-string">&quot;, password=&quot;</span> + password
+        + <span class="hljs-string">&quot;, username=&quot;</span> + userName + <span class="hljs-string">&quot;]&quot;</span>;
+    &#125;
+&#125;</code></pre>
 
 <p>4.这里将UserDao接口命名为UserMapper接口</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.sky.bookshop.dao;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> cn.sky.bookshop.beans.User;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserMapper</span> &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> User <span class="title function_">findUserByName</span><span class="params">(String username)</span><span class="keyword">throws</span> Exception;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">insertUser</span><span class="params">(User user)</span><span class="keyword">throws</span> Exception;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">updateUser</span><span class="params">(User user)</span><span class="keyword">throws</span> Exception;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">deleteUserById</span><span class="params">(<span class="type">int</span> id)</span><span class="keyword">throws</span> Exception;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="hljs java"><span class="hljs-keyword">package</span> cn.sky.bookshop.dao;
+
+<span class="hljs-keyword">import</span> cn.sky.bookshop.beans.User;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserMapper</span> &#123;
+
+
+    <span class="hljs-keyword">public</span> User <span class="hljs-title function_">findUserByName</span><span class="hljs-params">(String username)</span><span class="hljs-keyword">throws</span> Exception;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">insertUser</span><span class="hljs-params">(User user)</span><span class="hljs-keyword">throws</span> Exception;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">updateUser</span><span class="hljs-params">(User user)</span><span class="hljs-keyword">throws</span> Exception;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">deleteUserById</span><span class="hljs-params">(<span class="hljs-type">int</span> id)</span><span class="hljs-keyword">throws</span> Exception;
+&#125;</code></pre>
 
 <p>5.关键是这里的UserMapper.xml</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span> ?&gt;</span><br><span class="line"> &lt;!DOCTYPE mapper PUBLIC <span class="string">&quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;</span></span><br><span class="line"><span class="string">&quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;</span>&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- namespace必须是定义的接口全限定名 --&gt;</span><br><span class="line">&lt;mapper namespace=<span class="string">&quot;cn.sky.bookshop.dao.UserMapper&quot;</span>&gt;</span><br><span class="line">    &lt;!-- 里面id是接口的方法名 parameterType是接口里方法的传入参数 --&gt;</span><br><span class="line">    &lt;insert id=<span class="string">&quot;insertUser&quot;</span> parameterType=<span class="string">&quot;User&quot;</span>&gt;</span><br><span class="line">        insert into</span><br><span class="line">        <span class="title function_">t_user</span><span class="params">(id,username,password,email)</span>values(#&#123;id&#125;,#&#123;userName&#125;,#&#123;password&#125;,#&#123;email&#125;);</span><br><span class="line">    &lt;/insert&gt;</span><br><span class="line">    &lt;!-- resultType这里是接口里方法返回值类型：当方法返回集合时，这里还是设为集合元素类型 --&gt;</span><br><span class="line">    &lt;select id=<span class="string">&quot;findUserByName&quot;</span> parameterType=<span class="string">&quot;string&quot;</span> resultType=<span class="string">&quot;User&quot;</span>&gt;</span><br><span class="line">        select * from t_user where username=#&#123;userName&#125;;</span><br><span class="line">    &lt;/select&gt;</span><br><span class="line"></span><br><span class="line">    &lt;update id=<span class="string">&quot;updateUser&quot;</span> parameterType=<span class="string">&quot;User&quot;</span>&gt;</span><br><span class="line">        update t_user set</span><br><span class="line">        username=#&#123;userName&#125;,password=#&#123;password&#125;,email=#&#123;email&#125; where</span><br><span class="line">        id=#&#123;id&#125;;</span><br><span class="line">    &lt;/update&gt;</span><br><span class="line"></span><br><span class="line">    &lt;delete id=<span class="string">&quot;deleteUserById&quot;</span> parameterType=<span class="string">&quot;int&quot;</span>&gt;</span><br><span class="line">        delete from t_user</span><br><span class="line">        where id=#&#123;id&#125;;</span><br><span class="line">    &lt;/delete&gt;</span><br><span class="line">&lt;/mapper&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre><code class="hljs java">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span> ?&gt;
+ &lt;!DOCTYPE mapper PUBLIC <span class="hljs-string">&quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;</span>
+<span class="hljs-string">&quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;</span>&gt;
+
+&lt;!-- namespace必须是定义的接口全限定名 --&gt;
+&lt;mapper namespace=<span class="hljs-string">&quot;cn.sky.bookshop.dao.UserMapper&quot;</span>&gt;
+    &lt;!-- 里面id是接口的方法名 parameterType是接口里方法的传入参数 --&gt;
+    &lt;insert id=<span class="hljs-string">&quot;insertUser&quot;</span> parameterType=<span class="hljs-string">&quot;User&quot;</span>&gt;
+        insert into
+        <span class="hljs-title function_">t_user</span><span class="hljs-params">(id,username,password,email)</span>values(#&#123;id&#125;,#&#123;userName&#125;,#&#123;password&#125;,#&#123;email&#125;);
+    &lt;/insert&gt;
+    &lt;!-- resultType这里是接口里方法返回值类型：当方法返回集合时，这里还是设为集合元素类型 --&gt;
+    &lt;select id=<span class="hljs-string">&quot;findUserByName&quot;</span> parameterType=<span class="hljs-string">&quot;string&quot;</span> resultType=<span class="hljs-string">&quot;User&quot;</span>&gt;
+        select * from t_user where username=#&#123;userName&#125;;
+    &lt;/select&gt;
+
+    &lt;update id=<span class="hljs-string">&quot;updateUser&quot;</span> parameterType=<span class="hljs-string">&quot;User&quot;</span>&gt;
+        update t_user set
+        username=#&#123;userName&#125;,password=#&#123;password&#125;,email=#&#123;email&#125; where
+        id=#&#123;id&#125;;
+    &lt;/update&gt;
+
+    &lt;delete id=<span class="hljs-string">&quot;deleteUserById&quot;</span> parameterType=<span class="hljs-string">&quot;int&quot;</span>&gt;
+        delete from t_user
+        where id=#&#123;id&#125;;
+    &lt;/delete&gt;
+&lt;/mapper&gt;
+</code></pre>
 
 <p>6.注意：上面的步骤配置有些严格。。因为下面的接口动态代理对象（就是个接口的实现）是根据UserMapper接口和UserMapper.xml文件生成的! 下面是我的DAO测试类</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">UserMapperTest</span><br><span class="line"><span class="keyword">package</span> cn.sky.bookshop.test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSession;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> cn.sky.bookshop.beans.User;</span><br><span class="line"><span class="keyword">import</span> cn.sky.bookshop.dao.UserMapper;</span><br><span class="line"><span class="keyword">import</span> cn.sky.bookshop.utils.MyBatisUtil;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserMapperTest</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> args</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line"><span class="comment">//      addUserMapper(); 添加</span></span><br><span class="line"><span class="comment">//  findUserMapper(); 查找</span></span><br><span class="line"><span class="comment">//  updateUserMapper();更新</span></span><br><span class="line">    deleteUserMapper();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//添加记录</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">addUserMapper</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">SqlSession</span> <span class="variable">sqlSession</span> <span class="operator">=</span> MyBatisUtil.getSqlSession();</span><br><span class="line">    <span class="comment">//获取接口的动态代理对象</span></span><br><span class="line">    <span class="type">UserMapper</span> <span class="variable">um</span> <span class="operator">=</span> sqlSession.getMapper(UserMapper.class);</span><br><span class="line">    <span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">    user.setUserName(<span class="string">&quot;大侠&quot;</span>);</span><br><span class="line">    user.setPassword(<span class="string">&quot;daxia&quot;</span>);</span><br><span class="line">    user.setEmail(<span class="string">&quot;fdasf@qq.com2&quot;</span>);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        um.insertUser(user);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    sqlSession.commit();</span><br><span class="line">    sqlSession.close();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//查找记录</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">findUserMapper</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">SqlSession</span> <span class="variable">sqlSession</span> <span class="operator">=</span> MyBatisUtil.getSqlSession();</span><br><span class="line">    <span class="type">UserMapper</span> <span class="variable">um</span> <span class="operator">=</span> sqlSession.getMapper(UserMapper.class);</span><br><span class="line">    <span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        user = um.findUserByName(<span class="string">&quot;大侠&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(user);</span><br><span class="line">    sqlSession.close();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//跟新纪录</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">updateUserMapper</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">SqlSession</span> <span class="variable">sqlSession</span> <span class="operator">=</span> MyBatisUtil.getSqlSession();</span><br><span class="line">    <span class="type">UserMapper</span> <span class="variable">um</span> <span class="operator">=</span> sqlSession.getMapper(UserMapper.class);</span><br><span class="line">    <span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">    user.setId(<span class="number">4</span>);</span><br><span class="line">    user.setUserName(<span class="string">&quot;小虾&quot;</span>);</span><br><span class="line">    user.setPassword(<span class="string">&quot;xiaoxia&quot;</span>);</span><br><span class="line">    user.setEmail(<span class="string">&quot;xiaoxiao@qq.com2&quot;</span>);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        um.updateUser(user);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    sqlSession.commit();</span><br><span class="line">    sqlSession.close();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//删除记录</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">deleteUserMapper</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">SqlSession</span> <span class="variable">sqlSession</span> <span class="operator">=</span> MyBatisUtil.getSqlSession();</span><br><span class="line">    <span class="type">UserMapper</span> <span class="variable">um</span> <span class="operator">=</span> sqlSession.getMapper(UserMapper.class);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        um.deleteUserById(<span class="number">4</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    sqlSession.commit();</span><br><span class="line">    sqlSession.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="hljs java">UserMapperTest
+<span class="hljs-keyword">package</span> cn.sky.bookshop.test;
+
+<span class="hljs-keyword">import</span> org.apache.ibatis.session.SqlSession;
+
+<span class="hljs-keyword">import</span> cn.sky.bookshop.beans.User;
+<span class="hljs-keyword">import</span> cn.sky.bookshop.dao.UserMapper;
+<span class="hljs-keyword">import</span> cn.sky.bookshop.utils.MyBatisUtil;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserMapperTest</span> &#123;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> args</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;
+<span class="hljs-comment">//      addUserMapper(); 添加</span>
+<span class="hljs-comment">//  findUserMapper(); 查找</span>
+<span class="hljs-comment">//  updateUserMapper();更新</span>
+    deleteUserMapper();
+    &#125;
+    <span class="hljs-comment">//添加记录</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addUserMapper</span><span class="hljs-params">()</span>&#123;
+    <span class="hljs-type">SqlSession</span> <span class="hljs-variable">sqlSession</span> <span class="hljs-operator">=</span> MyBatisUtil.getSqlSession();
+    <span class="hljs-comment">//获取接口的动态代理对象</span>
+    <span class="hljs-type">UserMapper</span> <span class="hljs-variable">um</span> <span class="hljs-operator">=</span> sqlSession.getMapper(UserMapper.class);
+    <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">User</span>();
+    user.setUserName(<span class="hljs-string">&quot;大侠&quot;</span>);
+    user.setPassword(<span class="hljs-string">&quot;daxia&quot;</span>);
+    user.setEmail(<span class="hljs-string">&quot;fdasf@qq.com2&quot;</span>);
+    <span class="hljs-keyword">try</span> &#123;
+        um.insertUser(user);
+    &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;
+        e.printStackTrace();
+    &#125;
+    sqlSession.commit();
+    sqlSession.close();
+
+    &#125;
+    <span class="hljs-comment">//查找记录</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">findUserMapper</span><span class="hljs-params">()</span> &#123;
+    <span class="hljs-type">SqlSession</span> <span class="hljs-variable">sqlSession</span> <span class="hljs-operator">=</span> MyBatisUtil.getSqlSession();
+    <span class="hljs-type">UserMapper</span> <span class="hljs-variable">um</span> <span class="hljs-operator">=</span> sqlSession.getMapper(UserMapper.class);
+    <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;
+    <span class="hljs-keyword">try</span> &#123;
+        user = um.findUserByName(<span class="hljs-string">&quot;大侠&quot;</span>);
+    &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;
+        e.printStackTrace();
+    &#125;
+    System.out.println(user);
+    sqlSession.close();
+    &#125;
+    <span class="hljs-comment">//跟新纪录</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">updateUserMapper</span><span class="hljs-params">()</span>&#123;
+    <span class="hljs-type">SqlSession</span> <span class="hljs-variable">sqlSession</span> <span class="hljs-operator">=</span> MyBatisUtil.getSqlSession();
+    <span class="hljs-type">UserMapper</span> <span class="hljs-variable">um</span> <span class="hljs-operator">=</span> sqlSession.getMapper(UserMapper.class);
+    <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">User</span>();
+    user.setId(<span class="hljs-number">4</span>);
+    user.setUserName(<span class="hljs-string">&quot;小虾&quot;</span>);
+    user.setPassword(<span class="hljs-string">&quot;xiaoxia&quot;</span>);
+    user.setEmail(<span class="hljs-string">&quot;xiaoxiao@qq.com2&quot;</span>);
+    <span class="hljs-keyword">try</span> &#123;
+        um.updateUser(user);
+    &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;
+        e.printStackTrace();
+    &#125;
+    sqlSession.commit();
+    sqlSession.close();
+    &#125;
+    <span class="hljs-comment">//删除记录</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">deleteUserMapper</span><span class="hljs-params">()</span>&#123;
+    <span class="hljs-type">SqlSession</span> <span class="hljs-variable">sqlSession</span> <span class="hljs-operator">=</span> MyBatisUtil.getSqlSession();
+    <span class="hljs-type">UserMapper</span> <span class="hljs-variable">um</span> <span class="hljs-operator">=</span> sqlSession.getMapper(UserMapper.class);
+    <span class="hljs-keyword">try</span> &#123;
+        um.deleteUserById(<span class="hljs-number">4</span>);
+    &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;
+        e.printStackTrace();
+    &#125;
+    sqlSession.commit();
+    sqlSession.close();
+    &#125;
+&#125;</code></pre>
     </div>
   </article>
   
   
   </main>
   <footer>
-    <p>&copy; 2024 John Doe</p>
+    <p>&copy; 2024 xuxihai</p>
   </footer>
+
+  <!-- 引入 Clipboard.js -->
+  <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
+  <script src="/js/linenumber.js"></script>
+  <script src="/js/copy.js"></script>
 </body>
 </html>
 
