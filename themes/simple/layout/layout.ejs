@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <title><%= config.title %></title>
   <link rel="stylesheet" href="<%= url_for('/css/style.css') %>">
+  <link rel="stylesheet" href="<%= url_for('/css/github.css') %>">
 </head>
 <body>
   <header>
@@ -20,6 +21,11 @@
   <footer>
     <p>&copy; <%= new Date().getFullYear() %> <%= config.author %></p>
   </footer>
+
+  <!-- 引入 Clipboard.js -->
+  <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
+  <script src="<%= url_for('/js/linenumber.js') %>"></script>
+  <script src="<%= url_for('/js/copy.js') %>"></script>
 </body>
 </html>
 

@@ -3,11 +3,11 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
-subtitle: ''
+title: 一个人的小世界
+subtitle: '只有人骗人，代码从不骗人。'
 description: ''
 keywords:
-author: John Doe
+author: xuxihai
 language: en
 timezone: ''
 
@@ -45,11 +45,11 @@ relative_link: false
 future: true
 syntax_highlighter: highlight.js
 highlight:
-  line_number: true
+  line_number: false
   auto_detect: false
   tab_replace: ''
-  wrap: true
-  hljs: false
+  wrap: false
+  hljs: true
 prismjs:
   preprocess: true
   line_number: true
@@ -105,5 +105,3 @@ deploy:
   repo: git@github.com:haixuxu/haixuxu.github.io.git
   branch: gh-pages
   message: "deploy blog"
-  name: xuxihai
-  email: xuxihai123@gmail.com
