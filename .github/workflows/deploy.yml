@@ -39,9 +39,9 @@ jobs:
       env:
         DEPLOY_KEY: ${{secrets.DEPLOY_KEY}}
       run: |
-        apt-get update && sudo apt-get install -y openssh-client
+        sudo apt-get update && sudo apt-get install -y openssh-client
         eval "$(ssh-agent -s)"
-        timedatectl set-timezone "Asia/Shanghai"
+        sudo timedatectl set-timezone "Asia/Shanghai"
         mkdir -p ~/.ssh/
         echo "$DEPLOY_KEY" | tr -d '\r' > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
