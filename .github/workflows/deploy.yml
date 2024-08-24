@@ -35,21 +35,9 @@ jobs:
     - name: Generate static files
       run: hexo generate
 
-    - name: Configuration environment and dep
-      env:
-        DEPLOY_KEY: ${{secrets.DEPLOY_KEY}}
-      run: |
-        sudo apt-get update && sudo apt-get install -y openssh-client
-        eval "$(ssh-agent -s)"
-        sudo timedatectl set-timezone "Asia/Shanghai"
-        mkdir -p ~/.ssh/
-        echo "$DEPLOY_KEY" | tr -d '\r' > ~/.ssh/id_rsa
-        cat ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan github.com >> ~/.ssh/known_hosts
-        git config --global user.name xuxihai
-        git config --global user.email xuxihai123@gmail.com
-
-    - name: Deploy to GitHub Pages
-      run: hexo deploy
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./public
 
