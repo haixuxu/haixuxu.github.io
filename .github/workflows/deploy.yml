@@ -34,6 +34,8 @@ jobs:
 
     - name: Generate static files
       run: hexo generate
+    - name: set cname 
+      run:  echo blog.75cos.com>./public/CNAME
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v4
