@@ -105,3 +105,8 @@ deploy:
   repo: git@github.com:haixuxu/haixuxu.github.io.git
   branch: gh-pages
   message: "deploy blog"
+
+toc:
+  enable: true
+  number: false
+  max_depth: 6

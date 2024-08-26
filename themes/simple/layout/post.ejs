@@ -1,9 +1,14 @@
+
+<div id="toc-container"></div>
 <article>
     <h2><%= page.title %></h2>
     <p><%= page.date.format('YYYY-MM-DD') %></p>
     <div class="post-content">
       <%- page.content %>
     </div>
-  </article>
+ </article>
+
+
+ <script src="<%= url_for('/js/toc.js') %>"></script>
   
   
