@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>一个人的小世界</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/github.css">
+  <link rel="stylesheet" href="/css/toc.css">
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+  <header>
+    <h1><a href="https://haixuxu.github.io">一个人的小世界</a></h1>
+    <nav>
+      
+        <a href="/">Home</a>
+      
+        <a href="/archives">Archives</a>
+      
+    </nav>
+  </header>
+  <main>
+    
+<div id="toc-container"></div>
+<article>
+    <h2>Hexo博客中实现文章导航</h2>
+    <p>2024-08-26</p>
+    <div class="post-content">
+      <p>如果你想在 Hexo 博客中手动实现目录（Table of Contents, TOC），可以通过编写自定义的 JavaScript 脚本和修改主题模板来实现。以下是一个详细的步骤指南：</p>
+<h3 id="步骤-1-修改主题模板"><a href="#步骤-1-修改主题模板" class="headerlink" title="步骤 1: 修改主题模板"></a>步骤 1: 修改主题模板</h3><p>首先，我们需要在主题模板中添加一个用于放置目录的占位符。假设你使用的是 <code>next</code> 主题，可以在 <code>/themes/next/layout/_custom/post.swig</code> 文件中添加目录容器（如果没有这个文件，可以新建它）。</p>
+<p>在适当的位置（例如文章内容开头），添加一个 <code>div</code> 容器来放置目录：</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;toc-container&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+
+<h3 id="步骤-2-编写生成目录的-JavaScript-脚本"><a href="#步骤-2-编写生成目录的-JavaScript-脚本" class="headerlink" title="步骤 2: 编写生成目录的 JavaScript 脚本"></a>步骤 2: 编写生成目录的 JavaScript 脚本</h3><p>在主题的 <code>source/js</code> 目录下创建一个新的 JavaScript 文件（例如 <code>toc.js</code>），并添加以下代码：</p>
+<pre><code class="hljs javascript"><span class="hljs-variable language_">document</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;DOMContentLoaded&quot;</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-comment">// 获取文章内容中的所有标题元素</span>
+  <span class="hljs-keyword">const</span> content = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&#x27;.post-body&#x27;</span>);
+  <span class="hljs-keyword">const</span> headers = content.<span class="hljs-title function_">querySelectorAll</span>(<span class="hljs-string">&#x27;h1, h2, h3, h4, h5, h6&#x27;</span>);
+  
+  <span class="hljs-keyword">if</span> (headers.<span class="hljs-property">length</span> === <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span>;
+
+  <span class="hljs-comment">// 创建目录的容器</span>
+  <span class="hljs-keyword">const</span> tocContainer = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&#x27;toc-container&#x27;</span>);
+  <span class="hljs-keyword">const</span> tocList = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">&#x27;ul&#x27;</span>);
+  tocContainer.<span class="hljs-title function_">appendChild</span>(tocList);
+
+  <span class="hljs-comment">// 生成目录</span>
+  headers.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">header</span> =&gt;</span> &#123;
+    <span class="hljs-keyword">const</span> level = <span class="hljs-built_in">parseInt</span>(header.<span class="hljs-property">tagName</span>[<span class="hljs-number">1</span>]);
+    <span class="hljs-keyword">const</span> listItem = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">&#x27;li&#x27;</span>);
+    listItem.<span class="hljs-property">className</span> = <span class="hljs-string">&#x27;toc-level-&#x27;</span> + level;
+    
+    <span class="hljs-keyword">const</span> link = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">&#x27;a&#x27;</span>);
+    link.<span class="hljs-property">href</span> = <span class="hljs-string">&#x27;#&#x27;</span> + header.<span class="hljs-property">id</span>;
+    link.<span class="hljs-property">textContent</span> = header.<span class="hljs-property">textContent</span>;
+    
+    listItem.<span class="hljs-title function_">appendChild</span>(link);
+    tocList.<span class="hljs-title function_">appendChild</span>(listItem);
+    
+    <span class="hljs-comment">// 为每个标题添加一个 ID 以便链接跳转</span>
+    <span class="hljs-keyword">if</span> (!header.<span class="hljs-property">id</span>) &#123;
+      header.<span class="hljs-property">id</span> = <span class="hljs-string">&#x27;toc-&#x27;</span> + header.<span class="hljs-property">textContent</span>.<span class="hljs-title function_">toLowerCase</span>().<span class="hljs-title function_">replace</span>(<span class="hljs-regexp">/\s+/g</span>, <span class="hljs-string">&#x27;-&#x27;</span>);
+    &#125;
+  &#125;);
+&#125;);</code></pre>
+
+<h3 id="步骤-3-在主题模板中引入-JavaScript-脚本"><a href="#步骤-3-在主题模板中引入-JavaScript-脚本" class="headerlink" title="步骤 3: 在主题模板中引入 JavaScript 脚本"></a>步骤 3: 在主题模板中引入 JavaScript 脚本</h3><p>在主题的 <code>/themes/next/layout/_custom/head.swig</code> 文件中引入刚才创建的 JavaScript 文件：</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/js/toc.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+
+<h3 id="步骤-4-添加样式"><a href="#步骤-4-添加样式" class="headerlink" title="步骤 4: 添加样式"></a>步骤 4: 添加样式</h3><p>为了让目录看起来更美观，你可以为目录添加一些基本的样式。在主题的 <code>source/css</code> 目录下创建一个新的 CSS 文件（例如 <code>toc.css</code>），并添加以下样式：</p>
+<pre><code class="hljs css"><span class="hljs-selector-id">#toc-container</span> &#123;
+  <span class="hljs-attribute">position</span>: relative;
+  <span class="hljs-attribute">margin-bottom</span>: <span class="hljs-number">1em</span>;
+&#125;
+
+<span class="hljs-selector-id">#toc-container</span> <span class="hljs-selector-tag">ul</span> &#123;
+  <span class="hljs-attribute">list-style</span>: none;
+  <span class="hljs-attribute">padding-left</span>: <span class="hljs-number">0</span>;
+&#125;
+
+<span class="hljs-selector-id">#toc-container</span> <span class="hljs-selector-tag">li</span> &#123;
+  <span class="hljs-attribute">margin-left</span>: <span class="hljs-number">1em</span>;
+&#125;
+
+<span class="hljs-selector-class">.toc-level-1</span> <span class="hljs-selector-tag">a</span> &#123; <span class="hljs-attribute">font-weight</span>: bold; &#125;
+<span class="hljs-selector-class">.toc-level-2</span> <span class="hljs-selector-tag">a</span> &#123; <span class="hljs-attribute">font-weight</span>: normal; &#125;
+<span class="hljs-selector-class">.toc-level-3</span> <span class="hljs-selector-tag">a</span> &#123; <span class="hljs-attribute">font-weight</span>: lighter; &#125;
+<span class="hljs-comment">/* 根据需要继续为更深层级的标题设置样式 */</span></code></pre>
+
+<p>在主题的 <code>/themes/next/layout/_custom/head.swig</code> 文件中引入刚才创建的 CSS 文件：</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;stylesheet&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;/css/toc.css&quot;</span>&gt;</span></code></pre>
+
+<h3 id="步骤-5-确保文章标题有唯一的-ID"><a href="#步骤-5-确保文章标题有唯一的-ID" class="headerlink" title="步骤 5: 确保文章标题有唯一的 ID"></a>步骤 5: 确保文章标题有唯一的 ID</h3><p>在你的 Markdown 文件中，确保每个标题都有唯一的 ID。你可以手动添加 ID，或者使用一些工具自动生成。</p>
+<p>例如：</p>
+<pre><code class="hljs markdown"><span class="hljs-section"># 介绍 &#123;#intro&#125;</span>
+<span class="hljs-section">## 小节 &#123;#section&#125;</span></code></pre>
+
+<p>或者在生成目录的脚本中自动生成 ID（如上述 JavaScript 代码中所示）。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>上述步骤详细描述了如何通过修改 Hexo 主题模板、编写 JavaScript 脚本和添加样式来手动实现 TOC。如果你对 JavaScript 和 HTML&#x2F;CSS 有一定的了解，这种方法可以让你完全自定义目录的样式和行为。</p>
+
+    </div>
+ </article>
+
+
+ <script src="/js/toc.js"></script>
+  
+  
+  </main>
+  <footer>
+    <p>&copy; 2024 xuxihai</p>
+  </footer>
+
+  <!-- 引入 Clipboard.js -->
+  <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
+  <script src="/js/linenumber.js"></script>
+  <script src="/js/copy.js"></script>
+</body>
+</html>
+
