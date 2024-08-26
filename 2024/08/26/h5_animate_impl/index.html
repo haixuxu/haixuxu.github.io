@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>一个人的小世界</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/github.css">
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+  <header>
+    <h1><a href="https://haixuxu.github.io">一个人的小世界</a></h1>
+    <nav>
+      
+        <a href="/">Home</a>
+      
+        <a href="/archives">Archives</a>
+      
+    </nav>
+  </header>
+  <main>
+    <article>
+    <h2>前端实现动画方式</h2>
+    <p>2024-08-26</p>
+    <div class="post-content">
+      <p>前端实现动画的方式有多种，每种方式都有其独特的优点和适用场景。以下是一些常见的方法：</p>
+<h3 id="1-CSS-动画"><a href="#1-CSS-动画" class="headerlink" title="1. CSS 动画"></a>1. CSS 动画</h3><h4 id="使用-CSS-Transition"><a href="#使用-CSS-Transition" class="headerlink" title="使用 CSS Transition"></a>使用 CSS Transition</h4><p>CSS 过渡（transitions）可以在属性值发生变化时提供简单的动画效果，比如改变颜色、位置、大小等。</p>
+<pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>CSS Transition<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span>
+<span class="language-css">        <span class="hljs-selector-class">.box</span> &#123;</span>
+<span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">100px</span>;</span>
+<span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">100px</span>;</span>
+<span class="language-css">            <span class="hljs-attribute">background-color</span>: red;</span>
+<span class="language-css">            <span class="hljs-attribute">transition</span>: transform <span class="hljs-number">0.5s</span> ease-in-out;</span>
+<span class="language-css">        &#125;</span>
+<span class="language-css">        <span class="hljs-selector-class">.box</span><span class="hljs-selector-pseudo">:hover</span> &#123;</span>
+<span class="language-css">            <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translateX</span>(<span class="hljs-number">200px</span>);</span>
+<span class="language-css">        &#125;</span>
+<span class="language-css">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre>
+
+<h4 id="使用-CSS-Animation"><a href="#使用-CSS-Animation" class="headerlink" title="使用 CSS Animation"></a>使用 CSS Animation</h4><p>CSS 动画（animations）提供了更复杂的动画效果，可以定义关键帧（keyframes）来控制动画的各个阶段。</p>
+<pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>CSS Animation<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span>
+<span class="language-css">        <span class="hljs-keyword">@keyframes</span> move &#123;</span>
+<span class="language-css">            <span class="hljs-selector-tag">from</span> &#123; <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translateX</span>(<span class="hljs-number">0</span>); &#125;</span>
+<span class="language-css">            <span class="hljs-selector-tag">to</span> &#123; <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translateX</span>(<span class="hljs-number">200px</span>); &#125;</span>
+<span class="language-css">        &#125;</span>
+<span class="language-css">        <span class="hljs-selector-class">.box</span> &#123;</span>
+<span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">100px</span>;</span>
+<span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">100px</span>;</span>
+<span class="language-css">            <span class="hljs-attribute">background-color</span>: blue;</span>
+<span class="language-css">            <span class="hljs-attribute">animation</span>: move <span class="hljs-number">2s</span> infinite alternate;</span>
+<span class="language-css">        &#125;</span>
+<span class="language-css">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre>
+
+<h3 id="2-JavaScript-动画"><a href="#2-JavaScript-动画" class="headerlink" title="2. JavaScript 动画"></a>2. JavaScript 动画</h3><h4 id="使用-setInterval-或-setTimeout"><a href="#使用-setInterval-或-setTimeout" class="headerlink" title="使用 setInterval 或 setTimeout"></a>使用 setInterval 或 setTimeout</h4><p>可以使用 <code>setInterval</code> 或 <code>setTimeout</code> 手动更新元素的样式来实现动画。</p>
+<pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>JavaScript Animation<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span>
+<span class="language-css">        <span class="hljs-selector-class">.box</span> &#123;</span>
+<span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">100px</span>;</span>
+<span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">100px</span>;</span>
+<span class="language-css">            <span class="hljs-attribute">background-color</span>: green;</span>
+<span class="language-css">            <span class="hljs-attribute">position</span>: absolute;</span>
+<span class="language-css">        &#125;</span>
+<span class="language-css">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;box&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"></span>
+<span class="language-javascript">        <span class="hljs-keyword">let</span> box = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&#x27;box&#x27;</span>);</span>
+<span class="language-javascript">        <span class="hljs-keyword">let</span> position = <span class="hljs-number">0</span>;</span>
+<span class="language-javascript">        <span class="hljs-keyword">function</span> <span class="hljs-title function_">animate</span>(<span class="hljs-params"></span>) &#123;</span>
+<span class="language-javascript">            position += <span class="hljs-number">2</span>;</span>
+<span class="language-javascript">            box.<span class="hljs-property">style</span>.<span class="hljs-property">left</span> = position + <span class="hljs-string">&#x27;px&#x27;</span>;</span>
+<span class="language-javascript">            <span class="hljs-keyword">if</span> (position &lt; <span class="hljs-number">200</span>) &#123;</span>
+<span class="language-javascript">                <span class="hljs-title function_">requestAnimationFrame</span>(animate);</span>
+<span class="language-javascript">            &#125;</span>
+<span class="language-javascript">        &#125;</span>
+<span class="language-javascript">        <span class="hljs-title function_">animate</span>();</span>
+<span class="language-javascript">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre>
+
+<h4 id="使用-requestAnimationFrame"><a href="#使用-requestAnimationFrame" class="headerlink" title="使用 requestAnimationFrame"></a>使用 requestAnimationFrame</h4><p><code>requestAnimationFrame</code> 提供了更高效、更平滑的动画效果，相比 <code>setInterval</code> 和 <code>setTimeout</code> 更推荐使用。</p>
+<pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>JavaScript Animation<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span>
+<span class="language-css">        <span class="hljs-selector-class">.box</span> &#123;</span>
+<span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">100px</span>;</span>
+<span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">100px</span>;</span>
+<span class="language-css">            <span class="hljs-attribute">background-color</span>: green;</span>
+<span class="language-css">            <span class="hljs-attribute">position</span>: absolute;</span>
+<span class="language-css">        &#125;</span>
+<span class="language-css">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;box&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"></span>
+<span class="language-javascript">        <span class="hljs-keyword">let</span> box = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&#x27;box&#x27;</span>);</span>
+<span class="language-javascript">        <span class="hljs-keyword">let</span> position = <span class="hljs-number">0</span>;</span>
+<span class="language-javascript">        <span class="hljs-keyword">function</span> <span class="hljs-title function_">animate</span>(<span class="hljs-params"></span>) &#123;</span>
+<span class="language-javascript">            position += <span class="hljs-number">2</span>;</span>
+<span class="language-javascript">            box.<span class="hljs-property">style</span>.<span class="hljs-property">left</span> = position + <span class="hljs-string">&#x27;px&#x27;</span>;</span>
+<span class="language-javascript">            <span class="hljs-keyword">if</span> (position &lt; <span class="hljs-number">200</span>) &#123;</span>
+<span class="language-javascript">                <span class="hljs-title function_">requestAnimationFrame</span>(animate);</span>
+<span class="language-javascript">            &#125;</span>
+<span class="language-javascript">        &#125;</span>
+<span class="language-javascript">        <span class="hljs-title function_">animate</span>();</span>
+<span class="language-javascript">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre>
+
+<h3 id="3-JavaScript-动画库"><a href="#3-JavaScript-动画库" class="headerlink" title="3. JavaScript 动画库"></a>3. JavaScript 动画库</h3><h4 id="使用-jQuery"><a href="#使用-jQuery" class="headerlink" title="使用 jQuery"></a>使用 jQuery</h4><p>jQuery 提供了许多简单的方法来实现动画效果。</p>
+<pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>jQuery Animation<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span>
+<span class="language-css">        <span class="hljs-selector-class">.box</span> &#123;</span>
+<span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">100px</span>;</span>
+<span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">100px</span>;</span>
+<span class="language-css">            <span class="hljs-attribute">background-color</span>: purple;</span>
+<span class="language-css">            <span class="hljs-attribute">position</span>: absolute;</span>
+<span class="language-css">        &#125;</span>
+<span class="language-css">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"></span>
+<span class="language-javascript">        $(<span class="hljs-variable language_">document</span>).<span class="hljs-title function_">ready</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;</span>
+<span class="language-javascript">            $(<span class="hljs-string">&quot;.box&quot;</span>).<span class="hljs-title function_">animate</span>(&#123;<span class="hljs-attr">left</span>: <span class="hljs-string">&#x27;200px&#x27;</span>&#125;, <span class="hljs-number">2000</span>);</span>
+<span class="language-javascript">        &#125;);</span>
+<span class="language-javascript">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre>
+
+<h4 id="使用-GSAP"><a href="#使用-GSAP" class="headerlink" title="使用 GSAP"></a>使用 GSAP</h4><p>GSAP 是一个功能强大的动画库，适用于创建复杂的动画。</p>
+<pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>GSAP Animation<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span>
+<span class="language-css">        <span class="hljs-selector-class">.box</span> &#123;</span>
+<span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">100px</span>;</span>
+<span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">100px</span>;</span>
+<span class="language-css">            <span class="hljs-attribute">background-color</span>: orange;</span>
+<span class="language-css">            <span class="hljs-attribute">position</span>: absolute;</span>
+<span class="language-css">        &#125;</span>
+<span class="language-css">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"></span>
+<span class="language-javascript">        gsap.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.box&quot;</span>, &#123;<span class="hljs-attr">x</span>: <span class="hljs-number">200</span>, <span class="hljs-attr">duration</span>: <span class="hljs-number">2</span>&#125;);</span>
+<span class="language-javascript">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre>
+
+<h3 id="4-SVG-动画"><a href="#4-SVG-动画" class="headerlink" title="4. SVG 动画"></a>4. SVG 动画</h3><h4 id="使用-SVG-动画元素"><a href="#使用-SVG-动画元素" class="headerlink" title="使用 SVG 动画元素"></a>使用 SVG 动画元素</h4><p>SVG 自身支持动画，可以使用 <code>&lt;animate&gt;</code> 元素来实现。</p>
+<pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>SVG Animation<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">svg</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;400&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;200&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">rect</span> <span class="hljs-attr">x</span>=<span class="hljs-string">&quot;10&quot;</span> <span class="hljs-attr">y</span>=<span class="hljs-string">&quot;10&quot;</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;100&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;100&quot;</span> <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;blue&quot;</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">animate</span> <span class="hljs-attr">attributeName</span>=<span class="hljs-string">&quot;x&quot;</span> <span class="hljs-attr">from</span>=<span class="hljs-string">&quot;10&quot;</span> <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;200&quot;</span> <span class="hljs-attr">dur</span>=<span class="hljs-string">&quot;2s&quot;</span> <span class="hljs-attr">repeatCount</span>=<span class="hljs-string">&quot;indefinite&quot;</span> /&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">rect</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre>
+
+<h4 id="使用-JavaScript-操作-SVG"><a href="#使用-JavaScript-操作-SVG" class="headerlink" title="使用 JavaScript 操作 SVG"></a>使用 JavaScript 操作 SVG</h4><p>也可以使用 JavaScript 与 SVG 结合，进行更复杂的动画控制。</p>
+<pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>SVG with JavaScript<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">svg</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;400&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;200&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">rect</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;rect&quot;</span> <span class="hljs-attr">x</span>=<span class="hljs-string">&quot;10&quot;</span> <span class="hljs-attr">y</span>=<span class="hljs-string">&quot;10&quot;</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;100&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;100&quot;</span> <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;blue&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">rect</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"></span>
+<span class="language-javascript">        <span class="hljs-keyword">let</span> rect = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&#x27;rect&#x27;</span>);</span>
+<span class="language-javascript">        <span class="hljs-keyword">let</span> position = <span class="hljs-number">10</span>;</span>
+<span class="language-javascript">        <span class="hljs-keyword">function</span> <span class="hljs-title function_">animate</span>(<span class="hljs-params"></span>) &#123;</span>
+<span class="language-javascript">            position += <span class="hljs-number">2</span>;</span>
+<span class="language-javascript">            rect.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">&#x27;x&#x27;</span>, position);</span>
+<span class="language-javascript">            <span class="hljs-keyword">if</span> (position &lt; <span class="hljs-number">200</span>) &#123;</span>
+<span class="language-javascript">                <span class="hljs-title function_">requestAnimationFrame</span>(animate);</span>
+<span class="language-javascript">            &#125;</span>
+<span class="language-javascript">        &#125;</span>
+<span class="language-javascript">        <span class="hljs-title function_">animate</span>();</span>
+<span class="language-javascript">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>选择哪种动画方式取决于你的具体需求和项目的复杂度。对于简单的动画，CSS 过渡和动画通常是最方便的选择。而对于更复杂和高性能的动画，JavaScript（尤其是使用动画库如 GSAP）可能更适合。SVG 动画则适用于矢量图形动画。</p>
+
+    </div>
+  </article>
+  
+  
+  </main>
+  <footer>
+    <p>&copy; 2024 xuxihai</p>
+  </footer>
+
+  <!-- 引入 Clipboard.js -->
+  <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
+  <script src="/js/linenumber.js"></script>
+  <script src="/js/copy.js"></script>
+</body>
+</html>
+
