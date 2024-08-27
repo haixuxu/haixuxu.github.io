@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>一个人的小世界</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/github.css">
+  <link rel="stylesheet" href="/css/toc.css">
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+  <header>
+    <h1><a href="https://haixuxu.github.io">一个人的小世界</a></h1>
+    <nav>
+      
+        <a href="/">Home</a>
+      
+        <a href="/archives">Archives</a>
+      
+    </nav>
+  </header>
+  <main>
+    
+<div id="toc-container"></div>
+<article>
+    <h2>单例模式-Singleton</h2>
+    <p>2024-08-27</p>
+    <div class="post-content">
+      <p>在 JavaScript 中，单例模式（Singleton Pattern）确保一个类只有一个实例，并提供一个全局的访问点。有多种方式可以实现单例模式，以下是几种常见的实现方法：</p>
+<h3 id="方法一：使用闭包和立即执行函数表达式-IIFE"><a href="#方法一：使用闭包和立即执行函数表达式-IIFE" class="headerlink" title="方法一：使用闭包和立即执行函数表达式 (IIFE)"></a>方法一：使用闭包和立即执行函数表达式 (IIFE)</h3><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> <span class="hljs-title class_">Singleton</span> = (<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+  <span class="hljs-keyword">let</span> instance;
+
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">createInstance</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">const</span> object = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Object</span>(<span class="hljs-string">&quot;I am the instance&quot;</span>);
+    <span class="hljs-keyword">return</span> object;
+  &#125;
+
+  <span class="hljs-keyword">return</span> &#123;
+    <span class="hljs-attr">getInstance</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+      <span class="hljs-keyword">if</span> (!instance) &#123;
+        instance = <span class="hljs-title function_">createInstance</span>();
+      &#125;
+      <span class="hljs-keyword">return</span> instance;
+    &#125;,
+  &#125;;
+&#125;)();
+
+<span class="hljs-keyword">const</span> instance1 = <span class="hljs-title class_">Singleton</span>.<span class="hljs-title function_">getInstance</span>();
+<span class="hljs-keyword">const</span> instance2 = <span class="hljs-title class_">Singleton</span>.<span class="hljs-title function_">getInstance</span>();
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(instance1 === instance2); <span class="hljs-comment">// true</span></code></pre>
+
+<h3 id="方法二：使用-ES6-类和静态方法"><a href="#方法二：使用-ES6-类和静态方法" class="headerlink" title="方法二：使用 ES6 类和静态方法"></a>方法二：使用 ES6 类和静态方法</h3><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Singleton</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-comment">// Initialize your properties here</span>
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">data</span> = <span class="hljs-string">&quot;I am the instance&quot;</span>;
+  &#125;
+
+  <span class="hljs-keyword">static</span> <span class="hljs-title function_">getInstance</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">instance</span>) &#123;
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">instance</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Singleton</span>();
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">instance</span>;
+  &#125;
+&#125;</code></pre>
+
+<h3 id="方法三：通过模块模式"><a href="#方法三：通过模块模式" class="headerlink" title="方法三：通过模块模式"></a>方法三：通过模块模式</h3><p>在使用模块系统（如 ES6 模块）时，可以利用模块的单例特性来实现单例模式。</p>
+<pre><code class="hljs javascript"><span class="hljs-comment">// singleton.js</span>
+<span class="hljs-keyword">let</span> instance = <span class="hljs-literal">null</span>;
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Singleton</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">if</span> (!instance) &#123;
+      instance = <span class="hljs-variable language_">this</span>;
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">data</span> = <span class="hljs-string">&quot;I am the instance&quot;</span>;
+    &#125;
+    <span class="hljs-keyword">return</span> instance;
+  &#125;
+
+  <span class="hljs-title function_">getData</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">data</span>;
+  &#125;
+&#125;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title class_">Singleton</span>;
+
+<span class="hljs-comment">// main.js</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Singleton</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./singleton.js&quot;</span>;
+
+<span class="hljs-keyword">const</span> instance1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Singleton</span>();
+<span class="hljs-keyword">const</span> instance2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Singleton</span>();
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(instance1 === instance2); <span class="hljs-comment">// true</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(instance1.<span class="hljs-title function_">getData</span>()); <span class="hljs-comment">// &quot;I am the instance&quot;</span></code></pre>
+
+<h3 id="方法四：使用-Symbol-防止外部访问"><a href="#方法四：使用-Symbol-防止外部访问" class="headerlink" title="方法四：使用 Symbol 防止外部访问"></a>方法四：使用 Symbol 防止外部访问</h3><p>可以使用 JavaScript 的 <code>Symbol</code> 来创建一个私有的标识符，从而防止外部直接创建实例。</p>
+<pre><code class="hljs javascript"><span class="hljs-keyword">const</span> <span class="hljs-title class_">Singleton</span> = (<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+  <span class="hljs-keyword">const</span> instanceSymbol = <span class="hljs-title class_">Symbol</span>(<span class="hljs-string">&quot;instance&quot;</span>);
+
+  <span class="hljs-keyword">class</span> <span class="hljs-title class_">Singleton</span> &#123;
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;
+      <span class="hljs-keyword">if</span> (<span class="hljs-title class_">Singleton</span>[instanceSymbol]) &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-title class_">Singleton</span>[instanceSymbol];
+      &#125;
+      <span class="hljs-title class_">Singleton</span>[instanceSymbol] = <span class="hljs-variable language_">this</span>;
+
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">data</span> = <span class="hljs-string">&quot;I am the instance&quot;</span>;
+    &#125;
+
+    <span class="hljs-title function_">getData</span>(<span class="hljs-params"></span>) &#123;
+      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">data</span>;
+    &#125;
+  &#125;
+
+  <span class="hljs-keyword">return</span> <span class="hljs-title class_">Singleton</span>;
+&#125;)();
+
+<span class="hljs-keyword">const</span> instance1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Singleton</span>();
+<span class="hljs-keyword">const</span> instance2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Singleton</span>();
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(instance1 === instance2); <span class="hljs-comment">// true</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(instance1.<span class="hljs-title function_">getData</span>()); <span class="hljs-comment">// &quot;I am the instance&quot;</span></code></pre>
+
+<h3 id="方法五：使用-Proxy-代理"><a href="#方法五：使用-Proxy-代理" class="headerlink" title="方法五：使用 Proxy 代理"></a>方法五：使用 <code>Proxy</code> 代理</h3><p>通过 <code>Proxy</code> 可以拦截对象的构建过程，确保只创建一个实例。</p>
+<pre><code class="hljs javascript"><span class="hljs-keyword">const</span> <span class="hljs-title class_">Singleton</span> = (<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+  <span class="hljs-keyword">let</span> instance;
+
+  <span class="hljs-keyword">class</span> <span class="hljs-title class_">Singleton</span> &#123;
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;
+      <span class="hljs-keyword">if</span> (instance) &#123;
+        <span class="hljs-keyword">return</span> instance;
+      &#125;
+      instance = <span class="hljs-variable language_">this</span>;
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">data</span> = <span class="hljs-string">&quot;I am the instance&quot;</span>;
+    &#125;
+
+    <span class="hljs-title function_">getData</span>(<span class="hljs-params"></span>) &#123;
+      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">data</span>;
+    &#125;
+  &#125;
+
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Proxy</span>(<span class="hljs-title class_">Singleton</span>, &#123;
+    <span class="hljs-title function_">construct</span>(<span class="hljs-params">target, args</span>) &#123;
+      <span class="hljs-keyword">if</span> (!instance) &#123;
+        instance = <span class="hljs-keyword">new</span> <span class="hljs-title function_">target</span>(...args);
+      &#125;
+      <span class="hljs-keyword">return</span> instance;
+    &#125;,
+  &#125;);
+&#125;)();
+
+<span class="hljs-keyword">const</span> instance1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Singleton</span>();
+<span class="hljs-keyword">const</span> instance2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Singleton</span>();
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(instance1 === instance2); <span class="hljs-comment">// true</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(instance1.<span class="hljs-title function_">getData</span>()); <span class="hljs-comment">// &quot;I am the instance&quot;</span></code></pre>
+
+<p>这些示例展示了在 JavaScript 中如何实现单例模式。根据具体需求，可以选择最适合的实现方式。</p>
+
+    </div>
+ </article>
+
+
+ <script src="/js/toc.js"></script>
+  
+  
+  </main>
+  <footer>
+    <p>&copy; 2024 xuxihai</p>
+  </footer>
+
+  <!-- 引入 Clipboard.js -->
+  <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
+  <script src="/js/linenumber.js"></script>
+  <script src="/js/copy.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>一个人的小世界</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/github.css">
+  <link rel="stylesheet" href="/css/toc.css">
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+  <header>
+    <h1><a href="https://haixuxu.github.io">一个人的小世界</a></h1>
+    <nav>
+      
+        <a href="/">Home</a>
+      
+        <a href="/archives">Archives</a>
+      
+    </nav>
+  </header>
+  <main>
+    
+<div id="toc-container"></div>
+<article>
+    <h2>生成器模式-Builder</h2>
+    <p>2024-08-27</p>
+    <div class="post-content">
+      <p>生成器模式（Builder Pattern）是一种创建型设计模式，它允许您一步一步构建复杂对象。此外，它还允许您使用相同的构建过程创建不同的表示。生成器模式特别适用于构建那些包含多个部分的复杂对象。</p>
+<p>在 JavaScript 中，生成器模式可以通过类或函数来实现。以下是几种常见的实现方法。</p>
+<h3 id="方法一：使用类和链式调用"><a href="#方法一：使用类和链式调用" class="headerlink" title="方法一：使用类和链式调用"></a>方法一：使用类和链式调用</h3><p>这是生成器模式的典型实现方法，通过链式调用来一步步构建对象。</p>
+<pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Car</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">make</span> = <span class="hljs-string">&#x27;&#x27;</span>;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">model</span> = <span class="hljs-string">&#x27;&#x27;</span>;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">year</span> = <span class="hljs-number">0</span>;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">color</span> = <span class="hljs-string">&#x27;&#x27;</span>;
+  &#125;
+&#125;
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">CarBuilder</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">car</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Car</span>();
+  &#125;
+
+  <span class="hljs-title function_">setMake</span>(<span class="hljs-params">make</span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">car</span>.<span class="hljs-property">make</span> = make;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+  &#125;
+
+  <span class="hljs-title function_">setModel</span>(<span class="hljs-params">model</span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">car</span>.<span class="hljs-property">model</span> = model;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+  &#125;
+
+  <span class="hljs-title function_">setYear</span>(<span class="hljs-params">year</span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">car</span>.<span class="hljs-property">year</span> = year;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+  &#125;
+
+  <span class="hljs-title function_">setColor</span>(<span class="hljs-params">color</span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">car</span>.<span class="hljs-property">color</span> = color;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+  &#125;
+
+  <span class="hljs-title function_">build</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">car</span>;
+  &#125;
+&#125;
+
+<span class="hljs-keyword">const</span> car = <span class="hljs-keyword">new</span> <span class="hljs-title class_">CarBuilder</span>()
+  .<span class="hljs-title function_">setMake</span>(<span class="hljs-string">&#x27;Toyota&#x27;</span>)
+  .<span class="hljs-title function_">setModel</span>(<span class="hljs-string">&#x27;Corolla&#x27;</span>)
+  .<span class="hljs-title function_">setYear</span>(<span class="hljs-number">2020</span>)
+  .<span class="hljs-title function_">setColor</span>(<span class="hljs-string">&#x27;Red&#x27;</span>)
+  .<span class="hljs-title function_">build</span>();
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(car); <span class="hljs-comment">// Car &#123; make: &#x27;Toyota&#x27;, model: &#x27;Corolla&#x27;, year: 2020, color: &#x27;Red&#x27; &#125;</span></code></pre>
+
+<h3 id="方法二：使用函数和闭包"><a href="#方法二：使用函数和闭包" class="headerlink" title="方法二：使用函数和闭包"></a>方法二：使用函数和闭包</h3><p>可以使用函数和闭包来实现生成器模式，这种方法更加简洁。</p>
+<pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">CarBuilder</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-keyword">const</span> car = &#123;
+    <span class="hljs-attr">make</span>: <span class="hljs-string">&#x27;&#x27;</span>,
+    <span class="hljs-attr">model</span>: <span class="hljs-string">&#x27;&#x27;</span>,
+    <span class="hljs-attr">year</span>: <span class="hljs-number">0</span>,
+    <span class="hljs-attr">color</span>: <span class="hljs-string">&#x27;&#x27;</span>
+  &#125;;
+
+  <span class="hljs-keyword">return</span> &#123;
+    <span class="hljs-title function_">setMake</span>(<span class="hljs-params">make</span>) &#123;
+      car.<span class="hljs-property">make</span> = make;
+      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+    &#125;,
+    <span class="hljs-title function_">setModel</span>(<span class="hljs-params">model</span>) &#123;
+      car.<span class="hljs-property">model</span> = model;
+      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+    &#125;,
+    <span class="hljs-title function_">setYear</span>(<span class="hljs-params">year</span>) &#123;
+      car.<span class="hljs-property">year</span> = year;
+      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+    &#125;,
+    <span class="hljs-title function_">setColor</span>(<span class="hljs-params">color</span>) &#123;
+      car.<span class="hljs-property">color</span> = color;
+      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+    &#125;,
+    <span class="hljs-title function_">build</span>(<span class="hljs-params"></span>) &#123;
+      <span class="hljs-keyword">return</span> car;
+    &#125;
+  &#125;;
+&#125;
+
+<span class="hljs-keyword">const</span> car = <span class="hljs-title class_">CarBuilder</span>()
+  .<span class="hljs-title function_">setMake</span>(<span class="hljs-string">&#x27;Toyota&#x27;</span>)
+  .<span class="hljs-title function_">setModel</span>(<span class="hljs-string">&#x27;Corolla&#x27;</span>)
+  .<span class="hljs-title function_">setYear</span>(<span class="hljs-number">2020</span>)
+  .<span class="hljs-title function_">setColor</span>(<span class="hljs-string">&#x27;Red&#x27;</span>)
+  .<span class="hljs-title function_">build</span>();
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(car); <span class="hljs-comment">// &#123; make: &#x27;Toyota&#x27;, model: &#x27;Corolla&#x27;, year: 2020, color: &#x27;Red&#x27; &#125;</span></code></pre>
+
+<h3 id="方法三：使用-ES6-类和静态方法"><a href="#方法三：使用-ES6-类和静态方法" class="headerlink" title="方法三：使用 ES6 类和静态方法"></a>方法三：使用 ES6 类和静态方法</h3><p>这是使用 ES6 类和静态方法的一种实现方式，可以使代码更结构化。</p>
+<pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Car</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">make, model, year, color</span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">make</span> = make;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">model</span> = model;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">year</span> = year;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">color</span> = color;
+  &#125;
+
+  <span class="hljs-keyword">static</span> <span class="hljs-title class_">Builder</span> = <span class="hljs-keyword">class</span> &#123;
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">make</span> = <span class="hljs-string">&#x27;&#x27;</span>;
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">model</span> = <span class="hljs-string">&#x27;&#x27;</span>;
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">year</span> = <span class="hljs-number">0</span>;
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">color</span> = <span class="hljs-string">&#x27;&#x27;</span>;
+    &#125;
+
+    <span class="hljs-title function_">setMake</span>(<span class="hljs-params">make</span>) &#123;
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">make</span> = make;
+      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+    &#125;
+
+    <span class="hljs-title function_">setModel</span>(<span class="hljs-params">model</span>) &#123;
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">model</span> = model;
+      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+    &#125;
+
+    <span class="hljs-title function_">setYear</span>(<span class="hljs-params">year</span>) &#123;
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">year</span> = year;
+      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+    &#125;
+
+    <span class="hljs-title function_">setColor</span>(<span class="hljs-params">color</span>) &#123;
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">color</span> = color;
+      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+    &#125;
+
+    <span class="hljs-title function_">build</span>(<span class="hljs-params"></span>) &#123;
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Car</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">make</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">model</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">year</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">color</span>);
+    &#125;
+  &#125;
+&#125;
+
+<span class="hljs-keyword">const</span> car = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Car</span>.<span class="hljs-title class_">Builder</span>()
+  .<span class="hljs-title function_">setMake</span>(<span class="hljs-string">&#x27;Toyota&#x27;</span>)
+  .<span class="hljs-title function_">setModel</span>(<span class="hljs-string">&#x27;Corolla&#x27;</span>)
+  .<span class="hljs-title function_">setYear</span>(<span class="hljs-number">2020</span>)
+  .<span class="hljs-title function_">setColor</span>(<span class="hljs-string">&#x27;Red&#x27;</span>)
+  .<span class="hljs-title function_">build</span>();
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(car); <span class="hljs-comment">// Car &#123; make: &#x27;Toyota&#x27;, model: &#x27;Corolla&#x27;, year: 2020, color: &#x27;Red&#x27; &#125;</span></code></pre>
+
+<h3 id="方法四：使用工厂与生成器结合"><a href="#方法四：使用工厂与生成器结合" class="headerlink" title="方法四：使用工厂与生成器结合"></a>方法四：使用工厂与生成器结合</h3><p>在某些情况下，生成器模式和工厂模式可以结合使用，以实现更复杂的对象创建。</p>
+<pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Car</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">make, model, year, color</span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">make</span> = make;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">model</span> = model;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">year</span> = year;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">color</span> = color;
+  &#125;
+&#125;
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">CarBuilder</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">make</span> = <span class="hljs-string">&#x27;&#x27;</span>;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">model</span> = <span class="hljs-string">&#x27;&#x27;</span>;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">year</span> = <span class="hljs-number">0</span>;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">color</span> = <span class="hljs-string">&#x27;&#x27;</span>;
+  &#125;
+
+  <span class="hljs-title function_">setMake</span>(<span class="hljs-params">make</span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">make</span> = make;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+  &#125;
+
+  <span class="hljs-title function_">setModel</span>(<span class="hljs-params">model</span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">model</span> = model;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+  &#125;
+
+  <span class="hljs-title function_">setYear</span>(<span class="hljs-params">year</span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">year</span> = year;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+  &#125;
+
+  <span class="hljs-title function_">setColor</span>(<span class="hljs-params">color</span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">color</span> = color;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+  &#125;
+
+  <span class="hljs-title function_">build</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Car</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">make</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">model</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">year</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">color</span>);
+  &#125;
+&#125;
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">VehicleFactory</span> &#123;
+  <span class="hljs-keyword">static</span> <span class="hljs-title function_">createCar</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CarBuilder</span>();
+  &#125;
+&#125;
+
+<span class="hljs-keyword">const</span> car = <span class="hljs-title class_">VehicleFactory</span>.<span class="hljs-title function_">createCar</span>()
+  .<span class="hljs-title function_">setMake</span>(<span class="hljs-string">&#x27;Toyota&#x27;</span>)
+  .<span class="hljs-title function_">setModel</span>(<span class="hljs-string">&#x27;Corolla&#x27;</span>)
+  .<span class="hljs-title function_">setYear</span>(<span class="hljs-number">2020</span>)
+  .<span class="hljs-title function_">setColor</span>(<span class="hljs-string">&#x27;Red&#x27;</span>)
+  .<span class="hljs-title function_">build</span>();
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(car); <span class="hljs-comment">// Car &#123; make: &#x27;Toyota&#x27;, model: &#x27;Corolla&#x27;, year: 2020, color: &#x27;Red&#x27; &#125;</span></code></pre>
+
+<p>这些示例展示了如何在 JavaScript 中实现生成器模式。生成器模式在需要逐步构建复杂对象时特别有用，并且允许通过链式调用使代码更加简洁和可读。</p>
+
+    </div>
+ </article>
+
+
+ <script src="/js/toc.js"></script>
+  
+  
+  </main>
+  <footer>
+    <p>&copy; 2024 xuxihai</p>
+  </footer>
+
+  <!-- 引入 Clipboard.js -->
+  <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
+  <script src="/js/linenumber.js"></script>
+  <script src="/js/copy.js"></script>
+</body>
+</html>
+

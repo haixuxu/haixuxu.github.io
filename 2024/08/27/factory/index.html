@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>一个人的小世界</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/github.css">
+  <link rel="stylesheet" href="/css/toc.css">
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+  <header>
+    <h1><a href="https://haixuxu.github.io">一个人的小世界</a></h1>
+    <nav>
+      
+        <a href="/">Home</a>
+      
+        <a href="/archives">Archives</a>
+      
+    </nav>
+  </header>
+  <main>
+    
+<div id="toc-container"></div>
+<article>
+    <h2>工厂方法模式-Factory</h2>
+    <p>2024-08-27</p>
+    <div class="post-content">
+      <p>工厂方法模式（Factory Method Pattern）是一种创建型设计模式，它定义了一个用于创建对象的接口，让子类决定实例化哪一个类。工厂方法使得一个类的实例化延迟到其子类。</p>
+<p>在 JavaScript 中，工厂方法模式可以通过函数或类来实现。以下是几种常见的实现方法。</p>
+<h3 id="方法一：使用简单工厂函数"><a href="#方法一：使用简单工厂函数" class="headerlink" title="方法一：使用简单工厂函数"></a>方法一：使用简单工厂函数</h3><p>这是最简单的工厂方法实现，通过一个工厂函数来创建不同类型的对象。</p>
+<pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">Car</span>(<span class="hljs-params">make, model, year</span>) &#123;
+  <span class="hljs-variable language_">this</span>.<span class="hljs-property">make</span> = make;
+  <span class="hljs-variable language_">this</span>.<span class="hljs-property">model</span> = model;
+  <span class="hljs-variable language_">this</span>.<span class="hljs-property">year</span> = year;
+&#125;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">Truck</span>(<span class="hljs-params">make, model, year, payloadCapacity</span>) &#123;
+  <span class="hljs-variable language_">this</span>.<span class="hljs-property">make</span> = make;
+  <span class="hljs-variable language_">this</span>.<span class="hljs-property">model</span> = model;
+  <span class="hljs-variable language_">this</span>.<span class="hljs-property">year</span> = year;
+  <span class="hljs-variable language_">this</span>.<span class="hljs-property">payloadCapacity</span> = payloadCapacity;
+&#125;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">VehicleFactory</span>(<span class="hljs-params"></span>) &#123;&#125;
+
+<span class="hljs-title class_">VehicleFactory</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">createVehicle</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">type, make, model, year, payloadCapacity</span>) &#123;
+  <span class="hljs-keyword">if</span> (type === <span class="hljs-string">&#x27;car&#x27;</span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Car</span>(make, model, year);
+  &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type === <span class="hljs-string">&#x27;truck&#x27;</span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Truck</span>(make, model, year, payloadCapacity);
+  &#125;
+&#125;;
+
+<span class="hljs-keyword">const</span> factory = <span class="hljs-keyword">new</span> <span class="hljs-title class_">VehicleFactory</span>();
+
+<span class="hljs-keyword">const</span> myCar = factory.<span class="hljs-title function_">createVehicle</span>(<span class="hljs-string">&#x27;car&#x27;</span>, <span class="hljs-string">&#x27;Toyota&#x27;</span>, <span class="hljs-string">&#x27;Corolla&#x27;</span>, <span class="hljs-number">2020</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(myCar); <span class="hljs-comment">// Car &#123; make: &#x27;Toyota&#x27;, model: &#x27;Corolla&#x27;, year: 2020 &#125;</span>
+
+<span class="hljs-keyword">const</span> myTruck = factory.<span class="hljs-title function_">createVehicle</span>(<span class="hljs-string">&#x27;truck&#x27;</span>, <span class="hljs-string">&#x27;Ford&#x27;</span>, <span class="hljs-string">&#x27;F-150&#x27;</span>, <span class="hljs-number">2021</span>, <span class="hljs-number">3000</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(myTruck); <span class="hljs-comment">// Truck &#123; make: &#x27;Ford&#x27;, model: &#x27;F-150&#x27;, year: 2021, payloadCapacity: 3000 &#125;</span></code></pre>
+
+<h3 id="方法二：使用-ES6-类和静态方法"><a href="#方法二：使用-ES6-类和静态方法" class="headerlink" title="方法二：使用 ES6 类和静态方法"></a>方法二：使用 ES6 类和静态方法</h3><p>使用 ES6 类可以更结构化地实现工厂方法模式。</p>
+<pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Car</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">make, model, year</span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">make</span> = make;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">model</span> = model;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">year</span> = year;
+  &#125;
+&#125;
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Truck</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">make, model, year, payloadCapacity</span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">make</span> = make;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">model</span> = model;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">year</span> = year;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">payloadCapacity</span> = payloadCapacity;
+  &#125;
+&#125;
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">VehicleFactory</span> &#123;
+  <span class="hljs-keyword">static</span> <span class="hljs-title function_">createVehicle</span>(<span class="hljs-params">type, make, model, year, payloadCapacity</span>) &#123;
+    <span class="hljs-keyword">switch</span> (type) &#123;
+      <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;car&#x27;</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Car</span>(make, model, year);
+      <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;truck&#x27;</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Truck</span>(make, model, year, payloadCapacity);
+      <span class="hljs-attr">default</span>:
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;Unknown vehicle type&#x27;</span>);
+    &#125;
+  &#125;
+&#125;
+
+<span class="hljs-keyword">const</span> myCar = <span class="hljs-title class_">VehicleFactory</span>.<span class="hljs-title function_">createVehicle</span>(<span class="hljs-string">&#x27;car&#x27;</span>, <span class="hljs-string">&#x27;Toyota&#x27;</span>, <span class="hljs-string">&#x27;Corolla&#x27;</span>, <span class="hljs-number">2020</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(myCar); <span class="hljs-comment">// Car &#123; make: &#x27;Toyota&#x27;, model: &#x27;Corolla&#x27;, year: 2020 &#125;</span>
+
+<span class="hljs-keyword">const</span> myTruck = <span class="hljs-title class_">VehicleFactory</span>.<span class="hljs-title function_">createVehicle</span>(<span class="hljs-string">&#x27;truck&#x27;</span>, <span class="hljs-string">&#x27;Ford&#x27;</span>, <span class="hljs-string">&#x27;F-150&#x27;</span>, <span class="hljs-number">2021</span>, <span class="hljs-number">3000</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(myTruck); <span class="hljs-comment">// Truck &#123; make: &#x27;Ford&#x27;, model: &#x27;F-150&#x27;, year: 2021, payloadCapacity: 3000 &#125;</span></code></pre>
+    </div>
+ </article>
+
+
+ <script src="/js/toc.js"></script>
+  
+  
+  </main>
+  <footer>
+    <p>&copy; 2024 xuxihai</p>
+  </footer>
+
+  <!-- 引入 Clipboard.js -->
+  <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
+  <script src="/js/linenumber.js"></script>
+  <script src="/js/copy.js"></script>
+</body>
+</html>
+

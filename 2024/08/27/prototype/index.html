@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>一个人的小世界</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/github.css">
+  <link rel="stylesheet" href="/css/toc.css">
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+  <header>
+    <h1><a href="https://haixuxu.github.io">一个人的小世界</a></h1>
+    <nav>
+      
+        <a href="/">Home</a>
+      
+        <a href="/archives">Archives</a>
+      
+    </nav>
+  </header>
+  <main>
+    
+<div id="toc-container"></div>
+<article>
+    <h2>原型模式-Prototype</h2>
+    <p>2024-08-27</p>
+    <div class="post-content">
+      <p>原型模式（Prototype Pattern）是一种创建型设计模式，它通过复制现有对象来创建新对象，而不是通过类实例化。JavaScript 本质上就是基于原型的语言，因此原型模式在 JavaScript 中非常自然。</p>
+<p>以下是一些 JavaScript 中使用原型模式的示例：</p>
+<h3 id="方法一：使用-Object-create"><a href="#方法一：使用-Object-create" class="headerlink" title="方法一：使用 Object.create"></a>方法一：使用 Object.create</h3><p><code>Object.create</code> 方法可以创建一个新对象，并将其原型设置为指定的对象。</p>
+<pre><code class="hljs javascript"><span class="hljs-keyword">const</span> personPrototype = &#123;
+  <span class="hljs-title function_">greet</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Hello, my name is <span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.name&#125;</span>`</span>);
+  &#125;
+&#125;;
+
+<span class="hljs-comment">// 创建一个新对象并继承 personPrototype</span>
+<span class="hljs-keyword">const</span> person1 = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">create</span>(personPrototype);
+person1.<span class="hljs-property">name</span> = <span class="hljs-string">&#x27;Alice&#x27;</span>;
+person1.<span class="hljs-title function_">greet</span>(); <span class="hljs-comment">// Hello, my name is Alice</span>
+
+<span class="hljs-keyword">const</span> person2 = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">create</span>(personPrototype);
+person2.<span class="hljs-property">name</span> = <span class="hljs-string">&#x27;Bob&#x27;</span>;
+person2.<span class="hljs-title function_">greet</span>(); <span class="hljs-comment">// Hello, my name is Bob</span></code></pre>
+
+<h3 id="方法二：使用构造函数和原型"><a href="#方法二：使用构造函数和原型" class="headerlink" title="方法二：使用构造函数和原型"></a>方法二：使用构造函数和原型</h3><p>你可以使用构造函数来创建对象，并将方法定义在其原型上。</p>
+<pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">Person</span>(<span class="hljs-params">name</span>) &#123;
+  <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name;
+&#125;
+
+<span class="hljs-title class_">Person</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">greet</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Hello, my name is <span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.name&#125;</span>`</span>);
+&#125;;
+
+<span class="hljs-keyword">const</span> person1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>(<span class="hljs-string">&#x27;Alice&#x27;</span>);
+person1.<span class="hljs-title function_">greet</span>(); <span class="hljs-comment">// Hello, my name is Alice</span>
+
+<span class="hljs-keyword">const</span> person2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>(<span class="hljs-string">&#x27;Bob&#x27;</span>);
+person2.<span class="hljs-title function_">greet</span>(); <span class="hljs-comment">// Hello, my name is Bob</span></code></pre>
+
+<h3 id="方法三：使用-ES6-类和原型"><a href="#方法三：使用-ES6-类和原型" class="headerlink" title="方法三：使用 ES6 类和原型"></a>方法三：使用 ES6 类和原型</h3><p>ES6 类语法是构造函数和原型模式的语法糖，本质上还是基于原型的。</p>
+<pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Person</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">name</span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name;
+  &#125;
+
+  <span class="hljs-title function_">greet</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Hello, my name is <span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.name&#125;</span>`</span>);
+  &#125;
+&#125;
+
+<span class="hljs-keyword">const</span> person1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>(<span class="hljs-string">&#x27;Alice&#x27;</span>);
+person1.<span class="hljs-title function_">greet</span>(); <span class="hljs-comment">// Hello, my name is Alice</span>
+
+<span class="hljs-keyword">const</span> person2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>(<span class="hljs-string">&#x27;Bob&#x27;</span>);
+person2.<span class="hljs-title function_">greet</span>(); <span class="hljs-comment">// Hello, my name is Bob</span></code></pre>
+
+<h3 id="方法四：克隆现有对象"><a href="#方法四：克隆现有对象" class="headerlink" title="方法四：克隆现有对象"></a>方法四：克隆现有对象</h3><p>你可以创建一个对象并通过浅拷贝或深拷贝来克隆它。</p>
+<h4 id="浅拷贝"><a href="#浅拷贝" class="headerlink" title="浅拷贝"></a>浅拷贝</h4><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> original = &#123;
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Alice&#x27;</span>,
+  <span class="hljs-title function_">greet</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Hello, my name is <span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.name&#125;</span>`</span>);
+  &#125;
+&#125;;
+
+<span class="hljs-keyword">const</span> clone = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">assign</span>(&#123;&#125;, original);
+clone.<span class="hljs-property">name</span> = <span class="hljs-string">&#x27;Bob&#x27;</span>;
+clone.<span class="hljs-title function_">greet</span>(); <span class="hljs-comment">// Hello, my name is Bob</span></code></pre>
+
+<h4 id="深拷贝"><a href="#深拷贝" class="headerlink" title="深拷贝"></a>深拷贝</h4><p>使用 <code>JSON.parse</code> 和 <code>JSON.stringify</code> 进行深拷贝（注意：这种方法有局限性，不能处理函数和循环引用等）。</p>
+<pre><code class="hljs javascript"><span class="hljs-keyword">const</span> original = &#123;
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Alice&#x27;</span>,
+  <span class="hljs-title function_">greet</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Hello, my name is <span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.name&#125;</span>`</span>);
+  &#125;
+&#125;;
+
+<span class="hljs-keyword">const</span> clone = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(<span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(original));
+clone.<span class="hljs-property">name</span> = <span class="hljs-string">&#x27;Bob&#x27;</span>;
+<span class="hljs-comment">// clone.greet(); // 这行代码会报错，因为 `greet` 方法没有被复制</span></code></pre>
+
+<h3 id="方法五：使用第三方库（如-Lodash）"><a href="#方法五：使用第三方库（如-Lodash）" class="headerlink" title="方法五：使用第三方库（如 Lodash）"></a>方法五：使用第三方库（如 Lodash）</h3><p>如果需要更复杂的深拷贝，可以使用第三方库如 Lodash。</p>
+<pre><code class="hljs javascript"><span class="hljs-keyword">const</span> _ = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;lodash&#x27;</span>);
+
+<span class="hljs-keyword">const</span> original = &#123;
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Alice&#x27;</span>,
+  <span class="hljs-title function_">greet</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Hello, my name is <span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.name&#125;</span>`</span>);
+  &#125;
+&#125;;
+
+<span class="hljs-keyword">const</span> clone = _.<span class="hljs-title function_">cloneDeep</span>(original);
+clone.<span class="hljs-property">name</span> = <span class="hljs-string">&#x27;Bob&#x27;</span>;
+clone.<span class="hljs-title function_">greet</span>(); <span class="hljs-comment">// Hello, my name is Bob</span></code></pre>
+
+<p>这些示例展示了如何在 JavaScript 中使用原型模式。JavaScript 的原型链机制为实现原型模式提供了强大的支持，使得对象的创建和方法共享变得非常高效和灵活。</p>
+
+    </div>
+ </article>
+
+
+ <script src="/js/toc.js"></script>
+  
+  
+  </main>
+  <footer>
+    <p>&copy; 2024 xuxihai</p>
+  </footer>
+
+  <!-- 引入 Clipboard.js -->
+  <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
+  <script src="/js/linenumber.js"></script>
+  <script src="/js/copy.js"></script>
+</body>
+</html>
+
