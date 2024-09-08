@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>一个人的小世界</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/github.css">
+  <link rel="stylesheet" href="/css/toc.css">
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+  <header>
+    <h1><a href="https://haixuxu.github.io">一个人的小世界</a></h1>
+    <nav>
+      
+        <a href="/">Home</a>
+      
+        <a href="/archives">Archives</a>
+      
+    </nav>
+  </header>
+  <main>
+    
+<div id="toc-container"></div>
+<article>
+    <h2>多态本质是什么</h2>
+    <p>2024-09-08</p>
+    <div class="post-content">
+      <p>多态（polymorphism）是面向对象编程中的一个核心概念，<strong>指的是同一操作作用于不同的对象时，可以表现出不同的行为</strong>。多态的本质是通过接口或基类来定义操作，而具体的行为则由实现这些接口或继承自基类的具体对象来决定。</p>
+<p>多态的本质可以通过以下几个方面来理解：</p>
+<ol>
+<li><p><strong>接口一致性</strong>：多态允许使用统一的接口来操作不同类型的对象。这样，代码可以更加灵活和可扩展，因为不需要知道具体对象的类型，只需要知道它们实现了某个接口或继承自某个基类。</p>
+</li>
+<li><p><strong>方法重写（Override）</strong>：子类可以重写父类的方法，实现不同的行为。这种机制允许在运行时通过基类引用来调用子类的重写方法，从而实现动态绑定（late binding）。</p>
+</li>
+<li><p><strong>动态绑定</strong>：在运行时，根据实际对象类型来决定调用哪个方法。这与静态绑定（在编译时决定调用哪个方法）相对，使得程序能够更加灵活地处理不同类型的对象。</p>
+</li>
+</ol>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p>以一个简单的动物类层次结构为例，展示多态的概念：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Animal</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">speak</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">raise</span> NotImplementedError(<span class="hljs-string">&quot;Subclass must implement abstract method&quot;</span>)
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Dog</span>(<span class="hljs-title class_ inherited__">Animal</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">speak</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Woof!&quot;</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Cat</span>(<span class="hljs-title class_ inherited__">Animal</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">speak</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Meow!&quot;</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">make_animal_speak</span>(<span class="hljs-params">animal</span>):
+    <span class="hljs-built_in">print</span>(animal.speak())
+
+<span class="hljs-comment"># 使用多态</span>
+animals = [Dog(), Cat()]
+
+<span class="hljs-keyword">for</span> animal <span class="hljs-keyword">in</span> animals:
+    make_animal_speak(animal)</code></pre>
+
+<p>在这个示例中：</p>
+<ul>
+<li><code>Animal</code> 类定义了一个抽象方法 <code>speak</code>。</li>
+<li><code>Dog</code> 和 <code>Cat</code> 类继承自 <code>Animal</code> 并实现了 <code>speak</code> 方法。</li>
+<li><code>make_animal_speak</code> 函数接受一个 <code>Animal</code> 对象，并调用其 <code>speak</code> 方法。</li>
+</ul>
+<p>通过这种方式，<code>make_animal_speak</code> 函数可以处理任何继承自 <code>Animal</code> 的对象，而不需要知道具体的对象类型。这就是多态的力量所在。</p>
+<h3 id="多态的类型"><a href="#多态的类型" class="headerlink" title="多态的类型"></a>多态的类型</h3><p>多态可以分为以下几种类型：</p>
+<ol>
+<li><p><strong>子类型多态（Subtyping Polymorphism）</strong>：也称为“包含多态”或“继承多态”，是指一个父类引用可以指向任何一个子类实例。在上面的例子中，<code>Animal</code> 类的引用可以指向 <code>Dog</code> 或 <code>Cat</code> 的实例。</p>
+</li>
+<li><p><strong>参数多态（Parametric Polymorphism）</strong>：也称为“泛型多态”，允许定义和使用参数化的类型。比如在 C++ 和 Java 中的泛型（Generics）。</p>
+</li>
+<li><p><strong>重载多态（Ad-hoc Polymorphism）</strong>：通过函数重载或运算符重载实现的多态行为。不同的函数或运算符根据参数类型或数量的不同而表现出不同的行为。</p>
+</li>
+</ol>
+<h3 id="本质总结"><a href="#本质总结" class="headerlink" title="本质总结"></a>本质总结</h3><p>多态的本质在于通过抽象和接口使得程序能够处理不同类型的对象，而无需关心这些对象的具体类型。这种机制极大地提高了代码的可扩展性和灵活性，使得代码更容易维护和扩展。</p>
+
+    </div>
+ </article>
+
+
+ <script src="/js/toc.js"></script>
+  
+  
+  </main>
+  <footer>
+    <p>&copy; 2024 xuxihai</p>
+  </footer>
+
+  <!-- 引入 Clipboard.js -->
+  <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
+  <script src="/js/linenumber.js"></script>
+  <script src="/js/copy.js"></script>
+</body>
+</html>
+
