@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>一个人的小世界</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/github.css">
+  <link rel="stylesheet" href="/css/toc.css">
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+  <header>
+    <h1><a href="https://haixuxu.github.io">一个人的小世界</a></h1>
+    <nav>
+      
+        <a href="/">Home</a>
+      
+        <a href="/archives">Archives</a>
+      
+    </nav>
+  </header>
+  <main>
+    
+<div id="toc-container"></div>
+<article>
+    <h2>如何替换文件中的unicode为对应的字符</h2>
+    <p>2024-09-05</p>
+    <div class="post-content">
+      <h3 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h3><p>编写<code>convertUnicodeCli.js</code>脚本转换</p>
+<pre><code class="hljs js"><span class="hljs-meta">#!/usr/bin/env node</span>
+
+<span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;fs&#x27;</span>);
+<span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;path&#x27;</span>);
+
+<span class="hljs-comment">// 获取命令行参数</span>
+<span class="hljs-keyword">const</span> args = process.<span class="hljs-property">argv</span>.<span class="hljs-title function_">slice</span>(<span class="hljs-number">2</span>);
+
+<span class="hljs-keyword">if</span> (args.<span class="hljs-property">length</span> === <span class="hljs-number">0</span>) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;请提供要转换的文件路径。&#x27;</span>);
+  process.<span class="hljs-title function_">exit</span>(<span class="hljs-number">1</span>);
+&#125;
+
+<span class="hljs-keyword">const</span> inputFilePath = args[<span class="hljs-number">0</span>];
+<span class="hljs-keyword">const</span> outputFilePath = args[<span class="hljs-number">1</span>] || inputFilePath; <span class="hljs-comment">// 如果没有提供输出文件路径，默认覆盖输入文件</span>
+
+<span class="hljs-comment">// 检查文件是否存在</span>
+<span class="hljs-keyword">if</span> (!fs.<span class="hljs-title function_">existsSync</span>(inputFilePath)) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">`文件不存在: <span class="hljs-subst">$&#123;inputFilePath&#125;</span>`</span>);
+  process.<span class="hljs-title function_">exit</span>(<span class="hljs-number">1</span>);
+&#125;
+
+<span class="hljs-comment">// 读取文件内容</span>
+fs.<span class="hljs-title function_">readFile</span>(inputFilePath, <span class="hljs-string">&#x27;utf8&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">err, data</span>) =&gt;</span> &#123;
+  <span class="hljs-keyword">if</span> (err) &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">`读取文件失败: <span class="hljs-subst">$&#123;err&#125;</span>`</span>);
+    process.<span class="hljs-title function_">exit</span>(<span class="hljs-number">1</span>);
+  &#125;
+
+  <span class="hljs-comment">// 替换 Unicode 转义序列</span>
+  <span class="hljs-keyword">const</span> result = data.<span class="hljs-title function_">replace</span>(<span class="hljs-regexp">/\\u([\d\w]&#123;4&#125;)/gi</span>, <span class="hljs-function">(<span class="hljs-params">match, grp</span>) =&gt;</span> &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">String</span>.<span class="hljs-title function_">fromCharCode</span>(<span class="hljs-built_in">parseInt</span>(grp, <span class="hljs-number">16</span>));
+  &#125;);
+
+  <span class="hljs-comment">// 写入转换后的内容</span>
+  fs.<span class="hljs-title function_">writeFile</span>(outputFilePath, result, <span class="hljs-string">&#x27;utf8&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">err</span>) =&gt;</span> &#123;
+    <span class="hljs-keyword">if</span> (err) &#123;
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">`写入文件失败: <span class="hljs-subst">$&#123;err&#125;</span>`</span>);
+      process.<span class="hljs-title function_">exit</span>(<span class="hljs-number">1</span>);
+    &#125;
+
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`转换成功: <span class="hljs-subst">$&#123;outputFilePath&#125;</span>`</span>);
+  &#125;);
+&#125;);
+</code></pre>
+
+<p>使用</p>
+<pre><code class="hljs bash"><span class="hljs-comment"># test.js是输入文件，output.js是输出文件</span>
+node convertUnicodeCli.js test.js output.js</code></pre>
+    </div>
+ </article>
+
+
+ <script src="/js/toc.js"></script>
+  
+  
+  </main>
+  <footer>
+    <p>&copy; 2024 xuxihai</p>
+  </footer>
+
+  <!-- 引入 Clipboard.js -->
+  <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
+  <script src="/js/linenumber.js"></script>
+  <script src="/js/copy.js"></script>
+</body>
+</html>
+

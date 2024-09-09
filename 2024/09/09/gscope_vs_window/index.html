@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>一个人的小世界</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/github.css">
+  <link rel="stylesheet" href="/css/toc.css">
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+  <header>
+    <h1><a href="https://haixuxu.github.io">一个人的小世界</a></h1>
+    <nav>
+      
+        <a href="/">Home</a>
+      
+        <a href="/archives">Archives</a>
+      
+    </nav>
+  </header>
+  <main>
+    
+<div id="toc-container"></div>
+<article>
+    <h2>window对象和全局作用域的关系</h2>
+    <p>2024-09-09</p>
+    <div class="post-content">
+      <p>在浏览器环境中，<code>window</code> 对象和全局作用域之间的关系非常密切，但存在一些关键的区别和细微之处。以下是详细解释：</p>
+<h3 id="window-对象"><a href="#window-对象" class="headerlink" title="window 对象"></a><code>window</code> 对象</h3><ul>
+<li><p><strong>定义</strong>：</p>
+<ul>
+<li><code>window</code> 对象代表浏览器窗口，并提供了许多属性和方法，用于控制浏览器窗口和操作文档（DOM）。</li>
+<li>它也是全局对象（Global Object），这意味着它是全局作用域的一部分。</li>
+</ul>
+</li>
+<li><p><strong>属性和方法</strong>：</p>
+<ul>
+<li><code>window</code> 对象包含了许多内置的属性和方法，例如 <code>alert()</code>, <code>console</code>, <code>document</code>, <code>location</code> 等。</li>
+<li>你可以在 <code>window</code> 对象上直接定义自定义属性和方法。</li>
+</ul>
+</li>
+</ul>
+<h3 id="全局作用域"><a href="#全局作用域" class="headerlink" title="全局作用域"></a>全局作用域</h3><ul>
+<li><strong>定义</strong>：<ul>
+<li>全局作用域是 JavaScript 代码在该作用域中声明和定义的所有变量、函数和对象的集合。在浏览器中，全局作用域的全局对象是 <code>window</code>。</li>
+<li>在全局作用域中定义的变量和函数可以在任何地方访问。</li>
+</ul>
+</li>
+</ul>
+<h3 id="关系和区别"><a href="#关系和区别" class="headerlink" title="关系和区别"></a>关系和区别</h3><ol>
+<li><p><strong>全局变量与 <code>window</code> 对象的属性</strong>：</p>
+<ul>
+<li>在浏览器环境中，全局变量（使用 <code>var</code> 声明或直接赋值）会成为 <code>window</code> 对象的属性。<pre><code class="hljs javascript"><span class="hljs-keyword">var</span> globalVar = <span class="hljs-string">&quot;I&#x27;m a global variable&quot;</span>;
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">globalVar</span>); <span class="hljs-comment">// &quot;I&#x27;m a global variable&quot;</span>
+
+globalVar2 = <span class="hljs-string">&quot;I&#x27;m also a global variable&quot;</span>;
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">globalVar2</span>); <span class="hljs-comment">// &quot;I&#x27;m also a global variable&quot;</span></code></pre></li>
+</ul>
+</li>
+<li><p><strong><code>let</code> 和 <code>const</code> 声明的全局变量</strong>：</p>
+<ul>
+<li>使用 <code>let</code> 和 <code>const</code> 声明的全局变量不会成为 <code>window</code> 对象的属性。<pre><code class="hljs javascript"><span class="hljs-keyword">let</span> globalLet = <span class="hljs-string">&quot;I&#x27;m a global let variable&quot;</span>;
+<span class="hljs-keyword">const</span> globalConst = <span class="hljs-string">&quot;I&#x27;m a global const variable&quot;</span>;
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">globalLet</span>); <span class="hljs-comment">// undefined</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">globalConst</span>); <span class="hljs-comment">// undefined</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(globalLet); <span class="hljs-comment">// &quot;I&#x27;m a global let variable&quot;</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(globalConst); <span class="hljs-comment">// &quot;I&#x27;m a global const variable&quot;</span></code></pre></li>
+</ul>
+</li>
+<li><p><strong>严格模式下的行为</strong>：</p>
+<ul>
+<li>在严格模式下，未声明的变量（未使用 <code>var</code>、<code>let</code> 或 <code>const</code>）不会被隐式添加到 <code>window</code> 对象。<pre><code class="hljs javascript"><span class="hljs-meta">&quot;use strict&quot;</span>;
+globalVar3 = <span class="hljs-string">&quot;I&#x27;m a global variable&quot;</span>;
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">globalVar3</span>); <span class="hljs-comment">// Throws ReferenceError: globalVar3 is not defined</span></code></pre></li>
+</ul>
+</li>
+<li><p><strong>命名空间冲突</strong>：</p>
+<ul>
+<li>由于全局变量和 <code>window</code> 对象的属性共享同一个命名空间，因此可能会发生命名冲突。<pre><code class="hljs javascript"><span class="hljs-keyword">var</span> alert = <span class="hljs-string">&quot;This is a global variable&quot;</span>;
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">alert</span>); <span class="hljs-comment">// &quot;This is a global variable&quot;</span>
+<span class="hljs-comment">// 此时，window.alert 方法被覆盖，导致无法使用原生的 alert 方法。</span></code></pre></li>
+</ul>
+</li>
+<li><p><strong>作用域链</strong>：</p>
+<ul>
+<li>在全局作用域中，<code>window</code> 对象是作用域链的一部分。全局变量和函数声明会被添加到 <code>window</code> 对象上，除非使用 <code>let</code> 或 <code>const</code> 关键字。</li>
+<li>当访问变量时，JavaScript 引擎会首先查找当前作用域，然后逐级向上查找，直到全局作用域。</li>
+</ul>
+</li>
+</ol>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p>以下是一些示例代码，展示了 <code>window</code> 对象和全局作用域之间的关系：</p>
+<pre><code class="hljs javascript"><span class="hljs-comment">// 使用 var 声明全局变量</span>
+<span class="hljs-keyword">var</span> globalVar = <span class="hljs-string">&quot;I&#x27;m a global variable&quot;</span>;
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">globalVar</span>); <span class="hljs-comment">// &quot;I&#x27;m a global variable&quot;</span>
+
+<span class="hljs-comment">// 直接赋值全局变量</span>
+globalVar2 = <span class="hljs-string">&quot;I&#x27;m also a global variable&quot;</span>;
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">globalVar2</span>); <span class="hljs-comment">// &quot;I&#x27;m also a global variable&quot;</span>
+
+<span class="hljs-comment">// 使用 let 声明全局变量</span>
+<span class="hljs-keyword">let</span> globalLet = <span class="hljs-string">&quot;I&#x27;m a global let variable&quot;</span>;
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">globalLet</span>); <span class="hljs-comment">// undefined</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(globalLet); <span class="hljs-comment">// &quot;I&#x27;m a global let variable&quot;</span>
+
+<span class="hljs-comment">// 使用 const 声明全局变量</span>
+<span class="hljs-keyword">const</span> globalConst = <span class="hljs-string">&quot;I&#x27;m a global const variable&quot;</span>;
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">globalConst</span>); <span class="hljs-comment">// undefined</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(globalConst); <span class="hljs-comment">// &quot;I&#x27;m a global const variable&quot;</span>
+
+<span class="hljs-comment">// 在 window 对象上定义属性</span>
+<span class="hljs-variable language_">window</span>.<span class="hljs-property">customProp</span> = <span class="hljs-string">&quot;I&#x27;m a custom property&quot;</span>;
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(customProp); <span class="hljs-comment">// &quot;I&#x27;m a custom property&quot;</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">customProp</span>); <span class="hljs-comment">// &quot;I&#x27;m a custom property&quot;</span></code></pre>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>在浏览器环境中，<code>window</code> 对象是全局对象，代表浏览器窗口，并包含许多内置属性和方法。</li>
+<li>在全局作用域中定义的变量和函数（使用 <code>var</code> 声明或直接赋值）会成为 <code>window</code> 对象的属性。</li>
+<li>使用 <code>let</code> 和 <code>const</code> 声明的全局变量不会成为 <code>window</code> 对象的属性。</li>
+<li>严格模式下，未声明的变量不会被隐式添加到 <code>window</code> 对象。</li>
+<li>全局变量和 <code>window</code> 对象的属性共享同一个命名空间，可能会发生命名冲突。</li>
+</ul>
+
+    </div>
+ </article>
+
+
+ <script src="/js/toc.js"></script>
+  
+  
+  </main>
+  <footer>
+    <p>&copy; 2024 xuxihai</p>
+  </footer>
+
+  <!-- 引入 Clipboard.js -->
+  <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
+  <script src="/js/linenumber.js"></script>
+  <script src="/js/copy.js"></script>
+</body>
+</html>
+
