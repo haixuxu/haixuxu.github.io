@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>一个人的小世界</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/github.css">
+  <link rel="stylesheet" href="/css/toc.css">
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+  <header>
+    <h1><a href="https://haixuxu.github.io">一个人的小世界</a></h1>
+    <nav>
+      
+        <a href="/">Home</a>
+      
+        <a href="/archives">Archives</a>
+      
+    </nav>
+  </header>
+  <main>
+    
+<div id="toc-container"></div>
+<article>
+    <h2>repaint和reflow有什么区别</h2>
+    <p>2024-09-15</p>
+    <div class="post-content">
+      <p>重绘（Repaint）和重排（Reflow）是浏览器渲染过程中两个不同的步骤，它们的区别在于所涉及的计算复杂度和对性能的影响。</p>
+<h3 id="重绘（Repaint）"><a href="#重绘（Repaint）" class="headerlink" title="重绘（Repaint）"></a>重绘（Repaint）</h3><p>重绘是指当元素的样式更改但不会影响其布局时，浏览器只需要重新绘制该元素及其子元素。这通常发生在改变元素的视觉样式属性时，例如颜色、背景、边框颜色或阴影等。重绘的计算相对简单，通常只涉及图形层面的更新。</p>
+<p><strong>触发重绘的属性：</strong></p>
+<ul>
+<li><code>color</code></li>
+<li><code>background</code></li>
+<li><code>visibility</code></li>
+<li><code>border-color</code></li>
+<li><code>text-decoration</code></li>
+<li><code>box-shadow</code></li>
+<li><code>outline</code></li>
+</ul>
+<p><strong>示例：</strong></p>
+<pre><code class="hljs javascript">element.<span class="hljs-property">style</span>.<span class="hljs-property">color</span> = <span class="hljs-string">&#x27;red&#x27;</span>;  <span class="hljs-comment">// 只会触发重绘</span>
+element.<span class="hljs-property">style</span>.<span class="hljs-property">backgroundColor</span> = <span class="hljs-string">&#x27;blue&#x27;</span>;  <span class="hljs-comment">// 只会触发重绘</span></code></pre>
+
+<h3 id="重排（Reflow）"><a href="#重排（Reflow）" class="headerlink" title="重排（Reflow）"></a>重排（Reflow）</h3><p>重排是指当元素的几何属性（例如大小、位置）发生变化时，浏览器需要重新计算布局，从而更新页面的布局。这通常比重绘更消耗性能，因为它涉及更复杂的计算，可能会影响整个文档或文档的一部分。</p>
+<p><strong>触发重排的属性和方法：</strong></p>
+<ul>
+<li><code>width</code>, <code>height</code></li>
+<li><code>margin</code>, <code>padding</code></li>
+<li><code>border</code></li>
+<li><code>display</code></li>
+<li><code>position</code></li>
+<li><code>top</code>, <code>left</code>, <code>right</code>, <code>bottom</code></li>
+<li><code>font-size</code></li>
+<li>访问几何属性（<code>offsetWidth</code>, <code>clientHeight</code> 等）</li>
+<li>DOM 操作（<code>appendChild</code>, <code>removeChild</code> 等）</li>
+</ul>
+<p><strong>示例：</strong></p>
+<pre><code class="hljs javascript">element.<span class="hljs-property">style</span>.<span class="hljs-property">width</span> = <span class="hljs-string">&#x27;100px&#x27;</span>;  <span class="hljs-comment">// 会触发重排</span>
+element.<span class="hljs-property">style</span>.<span class="hljs-property">position</span> = <span class="hljs-string">&#x27;absolute&#x27;</span>;  <span class="hljs-comment">// 会触发重排</span>
+<span class="hljs-keyword">const</span> width = element.<span class="hljs-property">offsetWidth</span>;  <span class="hljs-comment">// 会触发重排</span></code></pre>
+
+<h3 id="性能影响"><a href="#性能影响" class="headerlink" title="性能影响"></a>性能影响</h3><ul>
+<li><strong>重绘（Repaint）</strong>：相对轻量级，只涉及图形层面的更新，不会影响布局。频繁的重绘通常不会严重影响性能，但在某些情况下（例如复杂的图形操作）也可能带来性能开销。</li>
+<li><strong>重排（Reflow）</strong>：较为重量级，需要重新计算元素的几何属性，可能会影响整个文档或文档的一部分。频繁的重排会显著影响性能，特别是在复杂布局或大量 DOM 操作的情况下。</li>
+</ul>
+<h3 id="优化建议"><a href="#优化建议" class="headerlink" title="优化建议"></a>优化建议</h3><p>为了优化浏览器的渲染性能，应该尽量减少重排和重绘的次数。以下是一些优化建议：</p>
+<ol>
+<li><strong>批量更新 DOM</strong>：将多次 DOM 操作合并在一次操作中完成。</li>
+<li><strong>使用文档碎片</strong>：在进行大量 DOM 操作时，使用 <code>DocumentFragment</code> 来减少重排次数。</li>
+<li><strong>缓存布局信息</strong>：避免在循环中多次访问会触发重排的属性，应该将其缓存起来。</li>
+<li><strong>使用 CSS 变换</strong>：使用 <code>transform</code> 和 <code>opacity</code> 进行动画和过渡，这些属性只会触发重绘，不会触发重排。</li>
+<li><strong>减少回流区域</strong>：尽量减少对整个文档的影响，限制重排的影响范围。</li>
+</ol>
+<p>通过这些优化手段，可以有效降低重排和重绘的频率，从而提高页面的渲染性能。</p>
+
+    </div>
+ </article>
+
+
+ <script src="/js/toc.js"></script>
+  
+  
+  </main>
+  <footer>
+    <p>&copy; 2024 xuxihai</p>
+  </footer>
+
+  <!-- 引入 Clipboard.js -->
+  <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
+  <script src="/js/linenumber.js"></script>
+  <script src="/js/copy.js"></script>
+</body>
+</html>
+
